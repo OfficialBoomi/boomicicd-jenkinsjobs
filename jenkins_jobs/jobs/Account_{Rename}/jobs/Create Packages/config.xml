@@ -1,0 +1,91 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Create packages from multiple processes&#xd;
+If package with the same version exists, a new package is not created. &#xd;
+&#xd;
+</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>componentIds</name>
+          <description>if component ids is null, processName is use to create packages</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>processNames</name>
+          <description>Comma separate list of process</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>packageVersion</name>
+          <description>Version of the Package to be created</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>notes</name>
+          <description>Notes </description>
+          <defaultValue>This package is ...</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>cd ${SCRIPTS_HOME}
+saveNotes=&quot;Triggered by Jenkins user: ${BUILD_USER_ID}. ${notes}&quot;
+savePackageVersion=&quot;${packageVersion}&quot;
+
+if [ -z &quot;${componentIds}&quot; ]
+then
+	IFS=&apos;,&apos; ;for processName in `echo &quot;${processNames}&quot;`; 
+	do 
+		notes=&quot;${saveNotes}&quot;
+    	packageVersion=&quot;${savePackageVersion}&quot;
+    	processName=`echo &quot;${processName}&quot; | xargs`
+    	saveProcessName=&quot;${processName}&quot;
+		source bin/queryProcess.sh processName=${processName}
+		source bin/createPackagedComponent.sh componentId=${componentId} componentType=&quot;Process&quot; packageVersion=&quot;${packageVersion}&quot; notes=&quot;${notes}&quot; 
+		echo &quot;Created package ${packageId} for process ${saveProcessName}&quot;
+ 	done   
+else    
+	IFS=&apos;,&apos; ;for componentId in `echo &quot;${componentIds}&quot;`; 
+	do 
+		notes=&quot;${saveNotes}&quot;
+    	packageVersion=&quot;${savePackageVersion}&quot;
+        componentId=`echo &quot;${componentId}&quot; | xargs`
+    	saveComponentId=&quot;${componentId}&quot;
+		source bin/createPackagedComponent.sh componentId=${componentId} componentType=&quot;Process&quot; packageVersion=&quot;${packageVersion}&quot; notes=&quot;${notes}&quot; 
+		echo &quot;Created package ${packageId} for process ${saveComponentId}&quot;
+ 	done   
+fi    
+</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.21">
+      <bindings>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>authToken</credentialsId>
+          <variable>authToken</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+      </bindings>
+    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
+    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.1"/>
+    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.5"/>
+  </buildWrappers>
+</project>

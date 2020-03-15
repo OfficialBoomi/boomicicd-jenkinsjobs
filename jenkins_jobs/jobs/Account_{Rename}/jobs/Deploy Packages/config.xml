@@ -1,0 +1,117 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Creates packages from multiple processes and deploys the package to a given environment&#xd;
+If package with the same version exists, a new package is not created. If the packageID is deployed, the deployment step is ignored&#xd;
+&#xd;
+source bin/deployPackage.sh env=${env} processName=${processName} packageVersion=${packageVersion} createdBy=${createdBy} notes=${notes} listenerStatus=${listenerStatus}</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>env</name>
+          <description>Name of the Environment</description>
+          <defaultValue></defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>componentIds</name>
+          <description>Component Id of to create and deploy. If null processNames are used instead.</description>
+          <defaultValue></defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>processNames</name>
+          <description>Comma separated list of processes</description>
+          <defaultValue></defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>packageVersion</name>
+          <description>Version of the Package to be created</description>
+          <defaultValue></defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>notes</name>
+          <description>Notes </description>
+          <defaultValue>This package is ...</defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>listenerStatus</name>
+          <description>Default listenerStatus</description>
+          <defaultValue>RUNNING</defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>cd ${SCRIPTS_HOME}
+
+saveNotes=&quot;Triggered by Jenkins user: ${BUILD_USER_ID}. ${notes}&quot;
+savePackageVersion=&quot;${packageVersion}&quot;
+saveListenerStatus=&quot;${listenerStatus}&quot;
+source bin/queryEnvironment.sh env=&quot;${env}&quot; classification=&quot;*&quot;
+toEnvId=$envId
+
+if [ -z &quot;${componentIds}&quot; ]
+then
+    IFS=&apos;,&apos; ;for processName in `echo &quot;${processNames}&quot;`; 
+    do 
+        notes=&quot;${saveNotes}&quot;
+        packageVersion=&quot;${savePackageVersion}&quot;
+        envId=${toEnvId}
+        listenerStatus=&quot;${saveListenerStatus}&quot;
+        processName=`echo &quot;${processName}&quot; | xargs`
+        saveProcessName=&quot;${processName}&quot;
+        source bin/queryProcess.sh processName=&quot;${processName}&quot;
+        source bin/createPackagedComponent.sh componentId=${componentId} componentType=&quot;Process&quot; packageVersion=${packageVersion} notes=&quot;${notes}&quot;
+        
+        notes=&quot;${saveNotes}&quot;
+        source bin/createDeployedPackage.sh envId=${envId} listenerStatus=&quot;${listenerStatus}&quot; packageId=$packageId notes=&quot;$notes&quot;
+        echo &quot;Deployed package for ${saveProcessName} with deployment $deploymentId&quot;
+    done
+    
+ else
+    IFS=&apos;,&apos; ;for componentId in `echo &quot;${componentIds}&quot;`; 
+    do 
+        notes=&quot;${saveNotes}&quot;
+        packageVersion=&quot;${savePackageVersion}&quot;
+        envId=${toEnvId}
+        listenerStatus=&quot;${saveListenerStatus}&quot;
+        componentId=`echo &quot;${componentId}&quot; | xargs`
+        saveComponentId=&quot;${componentId}&quot;
+        source bin/createPackagedComponent.sh componentId=${componentId} componentType=&quot;Process&quot; packageVersion=${packageVersion} notes=&quot;${notes}&quot;
+        
+        notes=&quot;${saveNotes}&quot;
+        source bin/createDeployedPackage.sh envId=${envId} listenerStatus=&quot;${listenerStatus}&quot; packageId=$packageId notes=&quot;$notes&quot;
+        echo &quot;Deployed package for ${saveComponentId} with deployment $deploymentId&quot;
+    done
+ fi</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.21">
+      <bindings>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>authToken</credentialsId>
+          <variable>authToken</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+      </bindings>
+    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
+    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.1"/>
+    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.5"/>
+  </buildWrappers>
+</project>

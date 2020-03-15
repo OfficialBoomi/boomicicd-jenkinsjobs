@@ -1,0 +1,104 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Creates a Process Schedule for a Process in an Atom&#xd;
+&#xd;
+source bin/updateProcessSchedules.sh atomName=${atomName} atomType=${atomType} processName=${processName} years=${years} months=${months} daysOfMonth=${daysOfMonth} daysOfWeek=${daysOfWeek} hours=${hours} minutes=${minutes}&#xd;
+</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>processName</name>
+          <description>Name of the Process to be Packaged</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>atomName</name>
+          <description>Name of the atom</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>atomType</name>
+          <description>Atom Type</description>
+          <defaultValue>*</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>years</name>
+          <description>Cron Job Year Run</description>
+          <defaultValue>*</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>months</name>
+          <description>Cron Job Month Run</description>
+          <defaultValue>*</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>days</name>
+          <description>Cron Job Day Run </description>
+          <defaultValue>*</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>hours</name>
+          <description>Hours to run the job</description>
+          <defaultValue>8-18</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>minutes</name>
+          <description>Minutes to run escape / with a \. 
+</description>
+          <defaultValue>0-59\/15</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>daysOfWeek</name>
+          <description>Day of the Week to Run the Job
+1 is Sunday and 7 is Saturday.</description>
+          <defaultValue>2,3,4,5,6</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>daysOfMonth</name>
+          <description>Day of the Month to Run the Job
+1 to 31</description>
+          <defaultValue>*</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>cd ${SCRIPTS_HOME}
+source bin/updateProcessSchedules.sh
+echo $scheduleId</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.20">
+      <bindings>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>authToken</credentialsId>
+          <variable>authToken</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+      </bindings>
+    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
+    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.0"/>
+  </buildWrappers>
+</project>

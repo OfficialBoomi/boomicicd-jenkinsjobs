@@ -1,0 +1,107 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Deploys a multiple processes to an environment&#xd;
+source bin/deployProcess.sh processId=${processId} envId=${envId} componentType=${componentType} notes=${notes}&#xd;
+&#xd;
+</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>processNames</name>
+          <description>Comma separate list of process</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>env</name>
+          <description>Name of the Environment</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>notes</name>
+          <description>Notes </description>
+          <defaultValue>This process is ...</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>
+cd ${SCRIPTS_HOME}
+
+
+source bin/queryEnvironment.sh env=&quot;${env}&quot; classification=&quot;*&quot;
+export toEnvId=$envId
+saveNotes=&quot;${notes}&quot;
+
+IFS=&apos;,&apos; ;for processName in `echo &quot;${processNames}&quot;`; 
+do 
+	envId=${toEnvId}
+    notes=&quot;${saveNotes}&quot;
+    processName=`echo &quot;${processName}&quot; | xargs`
+    echo &quot;Deploying ${processName} to environment ${toEnvId}&quot;
+	source bin/queryProcess.sh processName=&quot;${processName}&quot;
+	deployProcessId=$processId
+	source bin/createProcessAttachment.sh envId=$envId processId=$processId componentType=&quot;Process&quot;
+	source bin/deployProcess.sh processId=${deployProcessId} envId=${toEnvId} componentType=&quot;Process&quot; notes=&quot;${notes}&quot;
+	echo $deploymentId
+done
+
+</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.20">
+      <bindings>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>authToken</credentialsId>
+          <variable>authToken</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+      </bindings>
+    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
+    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.0">
+      <folderProperties>
+        <properties>
+          <com.mig82.folders.properties.StringProperty>
+            <key>h1</key>
+            <value>Accept: application/json</value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>h2</key>
+            <value>Content-Type: application/json</value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>accountId</key>
+            <value></value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>baseURL</key>
+            <value>https://api.boomi.com/api/rest/v1/$accountId</value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>SCRIPTS_HOME</key>
+            <value>/var/jenkins_home/cli/scripts</value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>SONAR_PROJECT_KEY</key>
+            <value>boomi</value>
+          </com.mig82.folders.properties.StringProperty>
+        </properties>
+      </folderProperties>
+    </com.mig82.folders.wrappers.ParentFolderBuildWrapper>
+  </buildWrappers>
+</project>

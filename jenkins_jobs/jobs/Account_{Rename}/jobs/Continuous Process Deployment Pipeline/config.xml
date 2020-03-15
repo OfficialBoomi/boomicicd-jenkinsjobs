@@ -1,0 +1,81 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.36">
+  <actions/>
+  <description>This pipeline Deploys Multiple Process&#xd;
+Runs Unit Test&#xd;
+Validates Unit Test&#xd;
+Promotes Process into Next Environment</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>processNames</name>
+          <description>Comma separated values of process</description>
+          <defaultValue></defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>notes</name>
+          <description>Deployment Notes</description>
+          <defaultValue>The process is ...</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>TestProcessName</name>
+          <description>Name of the test process to deploy and execute</description>
+          <defaultValue></defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>InitialEnvironment</name>
+          <description>Development Environment to deploy and perform tests</description>
+          <defaultValue></defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>atomName</name>
+          <description>Name of the atom where the unit tests are run</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>PromotionEnvironment</name>
+          <description>Environment to promote after all tests pass (Stage, Production)</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>listenerStatus</name>
+          <description>Listener status	after promotion
+</description>
+          <defaultValue>RUNNING</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.80">
+    <script>node {
+    stage(&apos;Deploy to Dev&apos;) {
+         build job: &apos;Deploy Multiple Processes&apos;, parameters: [[$class: &apos;StringParameterValue&apos;, name: &apos;processNames&apos;, value: processNames], [$class: &apos;StringParameterValue&apos;, name: &apos;env&apos;, value: InitialEnvironment], [$class: &apos;StringParameterValue&apos;, name: &apos;notes&apos;, value: notes]]
+    }    
+    stage(&apos;Deploy Test Process&apos;) {
+        build job: &apos;Deploy Multiple Processes&apos;, parameters: [[$class: &apos;StringParameterValue&apos;, name: &apos;processNames&apos;, value: TestProcessName], [$class: &apos;StringParameterValue&apos;, name: &apos;env&apos;, value: InitialEnvironment], [$class: &apos;StringParameterValue&apos;, name: &apos;notes&apos;, value: notes]]            
+    }
+    stage(&apos;Execute Test Process&apos;) {
+        build job: &apos;Execute Process&apos;, parameters: [[$class: &apos;StringParameterValue&apos;, name: &apos;processName&apos;, value: TestProcessName], [$class: &apos;StringParameterValue&apos;, name: &apos;atomName&apos;, value: atomName], [$class: &apos;StringParameterValue&apos;, name: &apos;atomType&apos;, value: &apos;*&apos;]]                
+    }
+    stage(&apos;Validate Test Process&apos;) {
+        build job: &apos;Query Execution Record&apos;, parameters: [[$class: &apos;StringParameterValue&apos;, name: &apos;processName&apos;, value: TestProcessName], [$class: &apos;StringParameterValue&apos;, name: &apos;componentId&apos;, value: &apos;%%&apos;], [$class: &apos;StringParameterValue&apos;, name: &apos;atomName&apos;, value: atomName], [$class: &apos;StringParameterValue&apos;, name: &apos;checkStatus&apos;, value: &apos;true&apos;]]                
+    }  
+    stage(&apos;Code Promotion&apos;) {
+         build job: &apos;Promote Multiple Processes&apos;, parameters: [[$class: &apos;StringParameterValue&apos;, name: &apos;processNames&apos;, value: processNames], [$class: &apos;StringParameterValue&apos;, name: &apos;from&apos;, value: InitialEnvironment], [$class: &apos;StringParameterValue&apos;, name: &apos;to&apos;, value: PromotionEnvironment], [$class: &apos;StringParameterValue&apos;, name: &apos;listenerStatus&apos;, value: listenerStatus]]
+    }
+    
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

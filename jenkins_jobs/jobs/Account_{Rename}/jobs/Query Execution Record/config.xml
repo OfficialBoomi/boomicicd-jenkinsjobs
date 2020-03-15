@@ -1,0 +1,85 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Query an execution record of a process&#xd;
+source bin/queryExecutionRecord.sh from=${from} to=${to} processName=${processName} atomName=${atomName}&#xd;
+</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>componentId</name>
+          <description></description>
+          <defaultValue>%%</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>processName</name>
+          <description>Name of the Process to be Packaged</description>
+          <defaultValue>%%</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>atomName</name>
+          <description>Name of the atom</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>from</name>
+          <description>Default will be 2 mins before current time. Must be in the format 2019-11-30T19:26:17Z (UTC).</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>to</name>
+          <description>Default will be now. Must be in the format 2019-11-30T19:26:17Z (UTC)</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>checkStatus</name>
+          <description>Mark the build as failed if the status of the last execution record is not COMPLETE.
+Accepted values are true / false</description>
+          <defaultValue>false</defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>cd ${SCRIPTS_HOME}
+sleep 15;
+source bin/queryExecutionRecord.sh processId=${componentId}
+checkStatus=`echo &quot;${checkStatus,,}&quot;`
+if [ &quot;$checkStatus&quot; == &quot;true&quot; ]
+then
+	if [ &quot;$status&quot; != &quot;COMPLETE&quot; ]
+    then
+    	 exit 255 
+    fi
+fi</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.21">
+      <bindings>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>authToken</credentialsId>
+          <variable>authToken</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+      </bindings>
+    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
+    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.1"/>
+  </buildWrappers>
+</project>

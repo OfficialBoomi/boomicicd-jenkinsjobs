@@ -1,0 +1,136 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Deploys processes to a local environment&#xd;
+Extracts the component file and pushes it to GIT&#xd;
+</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>processNames</name>
+          <description>Comma separate list of process</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>env</name>
+          <description>Name of the Environment</description>
+          <defaultValue>#jenkins</defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>atomName</name>
+          <description>Name of the atom</description>
+          <defaultValue>jenkins01</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>notes</name>
+          <description>Notes </description>
+          <defaultValue>This package is ...</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>TAG_NAME</name>
+          <description>Optional TAG NAME for GIT. TAG NAME must not contain spaces</description>
+          <defaultValue>Release</defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@4.0.0">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>${GIT_REPO}</url>
+        <credentialsId>git_id</credentialsId>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>*/master</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions/>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>cd ${SCRIPTS_HOME}
+
+
+source bin/queryEnvironment.sh env=&quot;${env}&quot; classification=&quot;*&quot;
+
+
+
+export toEnvId=$envId
+saveNotes=&quot;${notes}&quot;
+
+IFS=&apos;,&apos; ;for processName in `echo &quot;${processNames}&quot;`; 
+do 
+	envId=${toEnvId}
+    notes=&quot;${saveNotes}&quot;
+    processName=`echo &quot;${processName}&quot; | xargs`
+    saveProcessName=&quot;${processName}&quot;
+    
+    echo &quot;Deploying ${processName} to environment ${toEnvId}&quot;
+	source bin/queryProcess.sh processName=&quot;${processName}&quot;
+	deployProcessId=$processId
+    
+	source bin/createProcessAttachment.sh envId=$envId processId=$processId componentType=&quot;Process&quot;
+	source bin/deployProcess.sh processId=${deployProcessId} envId=${toEnvId} componentType=&quot;Process&quot; notes=&quot;${notes}&quot;
+	sleep 10; # wait few seconds before file gets downloaded&quot;
+	mkdir -p &quot;${WORKSPACE}/${BUILD_NUMBER}/${saveProcessName}/${deployProcessId}&quot;
+	cp /var/jenkins_home/boomi/Atom_${atomName}/processes/${deployProcessId}/${deployProcessId}.xml &quot;${WORKSPACE}/${BUILD_NUMBER}/${saveProcessName}/${deployProcessId}&quot;/
+    cd &quot;${WORKSPACE}/${BUILD_NUMBER}/${saveProcessName}/${deployProcessId}&quot;
+	for file in *.xml; do tidy -m -i -xml $file; done
+	cd ${SCRIPTS_HOME}
+done
+
+cd &quot;${WORKSPACE}/${BUILD_NUMBER}&quot;
+git add .
+git commit -m &quot;Saving ${WORKSPACE}/${BUILD_NUMBER} file to GIT.&quot;
+
+
+</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <hudson.plugins.git.GitPublisher plugin="git@4.0.0">
+      <configVersion>2</configVersion>
+      <pushMerge>true</pushMerge>
+      <pushOnlyIfSuccess>true</pushOnlyIfSuccess>
+      <forcePush>true</forcePush>
+      <tagsToPush>
+        <hudson.plugins.git.GitPublisher_-TagToPush>
+          <targetRepoName>origin</targetRepoName>
+          <tagName>${TAG_NAME}_${BUILD_NUMBER}</tagName>
+          <tagMessage>Deploying to ${BUILD_NUMBER} to origin from Jenkins</tagMessage>
+          <createTag>true</createTag>
+          <updateTag>false</updateTag>
+        </hudson.plugins.git.GitPublisher_-TagToPush>
+      </tagsToPush>
+    </hudson.plugins.git.GitPublisher>
+  </publishers>
+  <buildWrappers>
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.20">
+      <bindings>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>authToken</credentialsId>
+          <variable>authToken</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+      </bindings>
+    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
+    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.0"/>
+  </buildWrappers>
+</project>

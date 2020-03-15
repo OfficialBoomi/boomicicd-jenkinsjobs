@@ -1,0 +1,85 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>atomName</name>
+          <description>Name of the atom</description>
+          <defaultValue></defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>atomType</name>
+          <description>Atom Type CLOUD, MOLECULE or ATOM</description>
+          <defaultValue>*</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>atomStatus</name>
+          <description>Status of the Atom (ONLINE)</description>
+          <defaultValue>*</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>cd ${SCRIPTS_HOME}
+source ./bin/queryAtom.sh
+echo $atomId</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.20">
+      <bindings>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>authToken</credentialsId>
+          <variable>authToken</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+      </bindings>
+    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
+    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.0">
+      <folderProperties>
+        <properties>
+          <com.mig82.folders.properties.StringProperty>
+            <key>h1</key>
+            <value>Accept: application/json</value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>h2</key>
+            <value>Content-Type: application/json</value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>accountId</key>
+            <value></value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>baseURL</key>
+            <value>https://api.boomi.com/api/rest/v1/$accountId</value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>SCRIPTS_HOME</key>
+            <value>/var/jenkins_home/cli/scripts</value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>GIT_REPO</key>
+            <value>https://...git</value>
+          </com.mig82.folders.properties.StringProperty>
+        </properties>
+      </folderProperties>
+    </com.mig82.folders.wrappers.ParentFolderBuildWrapper>
+  </buildWrappers>
+</project>

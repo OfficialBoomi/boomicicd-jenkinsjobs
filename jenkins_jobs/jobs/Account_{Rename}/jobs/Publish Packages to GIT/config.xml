@@ -1,0 +1,198 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Deploys a packages to a local environment&#xd;
+Extracts the component file and publishes it to GIT&#xd;
+</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>env</name>
+          <description>Name of the Environment</description>
+          <defaultValue>#jenkins</defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>componentIds</name>
+          <description>Component ids to create and deploy. If null processNames are used instead.</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>processNames</name>
+          <description>Comma separated list of processes to be saved</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>atomName</name>
+          <description>Name of the Local atom with that can be accessed from Jenkins</description>
+          <defaultValue>jenkins01</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>packageVersion</name>
+          <description>Version of this package</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>notes</name>
+          <description>Notes </description>
+          <defaultValue>This package is ...</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>TAG_NAME</name>
+          <description>Optional TAG NAME for the GIT. TAG NAME must not have spaces.</description>
+          <defaultValue>Release</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>deploy</name>
+          <description>If set to true will deploy code before extracting it.</description>
+          <defaultValue>true</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@4.2.0">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>${DEFAULT_GIT_REPO}</url>
+        <credentialsId>git_id</credentialsId>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>*/master</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions/>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>cd ${SCRIPTS_HOME}
+listenerStatus=&quot;RUNNING&quot;
+saveNotes=&quot;Triggered by Jenkins user: ${BUILD_USER_ID}. ${notes}&quot;
+savePackageVersion=&quot;${packageVersion}&quot;
+saveListenerStatus=&quot;${listenerStatus}&quot;
+source bin/queryEnvironment.sh env=&quot;${env}&quot; classification=&quot;*&quot;
+toEnvId=$envId
+deploy=`echo &quot;${deploy,,}&quot;`
+
+
+if [ -z &quot;${componentIds}&quot; ]
+then
+    IFS=&apos;,&apos; ;for processName in `echo &quot;${processNames}&quot;`; 
+    do 
+      notes=&quot;${saveNotes}&quot;
+      packageVersion=&quot;${savePackageVersion}&quot;
+      envId=${toEnvId}
+      processName=`echo &quot;${processName}&quot; | xargs`
+      listenerStatus=&quot;${saveListenerStatus}&quot;
+      saveProcessName=&quot;${processName}&quot;
+      source bin/queryProcess.sh processName=&quot;${processName}&quot;
+      deployComponentId=${componentId}
+      
+      if [ &quot;$deploy&quot; == &quot;true&quot; ]
+	  then
+		source bin/createPackagedComponent.sh componentId=${componentId} componentType=&quot;Process&quot; packageVersion=&quot;${packageVersion}&quot; notes=&quot;${notes}&quot; 
+      	notes=&quot;${saveNotes}&quot;      
+      	source bin/createDeployedPackage.sh envId=${envId} listenerStatus=&quot;${listenerStatus}&quot; packageId=$packageId notes=&quot;$notes&quot;
+      	echo &quot;Deployed package for ${saveProcessName} with deployment $deploymentId&quot;
+      	sleep 10; # wait few seconds before file gets downloaded&quot;        
+      fi
+      
+      &quot;${LOCAL_ATOM_INSTALL_DIR}&quot;/Atom_${atomName}/bin/atom stop
+      mkdir -p &quot;${WORKSPACE}/${BUILD_NUMBER}/${saveProcessName}/${deployComponentId}&quot;
+      cp -Rf &quot;${LOCAL_ATOM_INSTALL_DIR}/Atom_${atomName}/processes/${deployComponentId}&quot; &quot;${WORKSPACE}/${BUILD_NUMBER}/${saveProcessName}/&quot;
+      cd &quot;${WORKSPACE}/${BUILD_NUMBER}/${saveProcessName}/${deployComponentId}&quot;
+      for file in *.xml; do tidy -m -i -xml $file; done
+      cd &quot;${WORKSPACE}/${BUILD_NUMBER}&quot;
+      cd ${SCRIPTS_HOME}
+    done
+    
+else
+    IFS=&apos;,&apos; ;for componentId in `echo &quot;${componentIds}&quot;`; 
+    do 
+      notes=&quot;${saveNotes}&quot;
+      packageVersion=&quot;${savePackageVersion}&quot;
+      envId=${toEnvId}
+      componentId=`echo &quot;${componentId}&quot; | xargs`
+      listenerStatus=&quot;${saveListenerStatus}&quot;
+      notes=&quot;${saveNotes}&quot;
+      deployComponentId=${componentId}
+      URL=$baseURL/Process/${deployComponentId}
+      saveProcessName=`curl -s -X GET -u $authToken -H &quot;${h1}&quot; -H &quot;${h2}&quot; $URL | jq -r .name`
+      
+      if [ &quot;$deploy&quot; == &quot;true&quot; ]
+	  then
+		source bin/createPackagedComponent.sh componentId=${componentId} componentType=&quot;Process&quot; packageVersion=&quot;${packageVersion}&quot; notes=&quot;${notes}&quot;
+      	notes=&quot;${saveNotes}&quot;   
+      	source bin/createDeployedPackage.sh envId=${envId} listenerStatus=&quot;${listenerStatus}&quot; packageId=$packageId notes=&quot;$notes&quot;
+      	echo &quot;Deployed package for ${saveProcessName} with deployment $deploymentId&quot;
+      	sleep 10; # wait few seconds before file gets downloaded&quot;
+      fi
+      &quot;${LOCAL_ATOM_INSTALL_DIR}&quot;/Atom_${atomName}/bin/atom stop
+	  
+      mkdir -p &quot;${WORKSPACE}/${BUILD_NUMBER}/${saveProcessName}/${deployComponentId}&quot;
+      cp -Rf &quot;${LOCAL_ATOM_INSTALL_DIR}/Atom_${atomName}/processes/${deployComponentId}&quot; &quot;${WORKSPACE}/${BUILD_NUMBER}/${saveProcessName}/&quot;
+      cd &quot;${WORKSPACE}/${BUILD_NUMBER}/${saveProcessName}/${deployComponentId}&quot;
+      for file in *.xml; do tidy -m -i -xml $file; done
+      cd &quot;${WORKSPACE}/${BUILD_NUMBER}&quot;
+      cd ${SCRIPTS_HOME}
+    done
+fi
+
+
+cd &quot;${WORKSPACE}/${BUILD_NUMBER}&quot;
+git add .
+git commit -m &quot;Saving ${WORKSPACE}/${BUILD_NUMBER} file to GIT.&quot;
+
+cd &quot;${LOCAL_ATOM_INSTALL_DIR}&quot;/Atom_${atomName}/bin
+BUILD_ID=dontKillMe nohup bash ./restart.sh &amp;</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <hudson.plugins.git.GitPublisher plugin="git@4.2.0">
+      <configVersion>2</configVersion>
+      <pushMerge>true</pushMerge>
+      <pushOnlyIfSuccess>true</pushOnlyIfSuccess>
+      <forcePush>true</forcePush>
+      <tagsToPush>
+        <hudson.plugins.git.GitPublisher_-TagToPush>
+          <targetRepoName>origin</targetRepoName>
+          <tagName>&quot;${TAG_NAME}_${BUILD_NUMBER}&quot;</tagName>
+          <tagMessage>Deploying to ${TAG_NAME}_${BUILD_NUMBER} to origin from Jenkins</tagMessage>
+          <createTag>true</createTag>
+          <updateTag>false</updateTag>
+        </hudson.plugins.git.GitPublisher_-TagToPush>
+      </tagsToPush>
+    </hudson.plugins.git.GitPublisher>
+  </publishers>
+  <buildWrappers>
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.21">
+      <bindings>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>authToken</credentialsId>
+          <variable>authToken</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+      </bindings>
+    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
+    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.1"/>
+    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.5"/>
+  </buildWrappers>
+</project>

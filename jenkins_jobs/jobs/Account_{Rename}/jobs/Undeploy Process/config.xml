@@ -1,0 +1,86 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Detaches a Process from an environment&#xd;
+&#xd;
+&#xd;
+&#xd;
+</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>processName</name>
+          <description>Name of the Process to be Packaged</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>env</name>
+          <description>Name of the Environment</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>cd ${SCRIPTS_HOME}
+source bin/queryProcess.sh processName=${processName}
+source bin/queryEnvironment.sh env=${env} classification=&quot;*&quot;
+source bin/queryProcessAttachment.sh processId=${processId} envId=${envId} componentType=&quot;process&quot;
+curl -s -X DELETE -u $authToken -H &quot;${h1}&quot; -H &quot;${h2}&quot;  $baseURL/ProcessEnvironmentAttachment/$processAttachmentId &gt; out.json
+</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.20">
+      <bindings>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>authToken</credentialsId>
+          <variable>authToken</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+      </bindings>
+    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
+    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.0">
+      <folderProperties>
+        <properties>
+          <com.mig82.folders.properties.StringProperty>
+            <key>h1</key>
+            <value>Accept: application/json</value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>h2</key>
+            <value>Content-Type: application/json</value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>accountId</key>
+            <value></value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>baseURL</key>
+            <value>https://api.boomi.com/api/rest/v1/$accountId</value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>SCRIPTS_HOME</key>
+            <value>/var/jenkins_home/cli/scripts</value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>GIT_REPO</key>
+            <value>https://...git</value>
+          </com.mig82.folders.properties.StringProperty>
+        </properties>
+      </folderProperties>
+    </com.mig82.folders.wrappers.ParentFolderBuildWrapper>
+  </buildWrappers>
+</project>

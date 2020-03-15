@@ -1,0 +1,110 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Promotes current version of multiple processes from an environment to an environment. If a want to promote an older version of a process use promoteProcess job.&#xd;
+&#xd;
+</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>processNames</name>
+          <description>Comma separated list of process</description>
+          <defaultValue></defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>from</name>
+          <description>From Environment Name</description>
+          <defaultValue></defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>to</name>
+          <description>To Environment Name</description>
+          <defaultValue></defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>listenerStatus</name>
+          <description>Listener Status</description>
+          <defaultValue>RUNNING</defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>cd ${SCRIPTS_HOME}
+
+source bin/queryEnvironment.sh env=$from classification=&quot;*&quot;
+saveFromEnvId=$envId
+
+source bin/queryEnvironment.sh env=$to classification=&quot;*&quot;
+saveToEnvId=$envId
+
+IFS=&apos;,&apos; ;for processName in `echo &quot;${processNames}&quot;`; 
+do 
+	fromEnvId=${saveFromEnvId}
+	toEnvId=${saveToEnvId}
+    processName=`echo &quot;${processName}&quot; | xargs`
+	source bin/queryProcess.sh processName=$processName
+	deployProcessId=$processId
+    source bin/createProcessAttachment.sh envId=$toEnvId processId=$processId componentType=&quot;Process&quot;
+	source bin/queryDeployment.sh processId=$deployProcessId envId=$fromEnvId version=0 current=&quot;true&quot;
+	URL=$baseURL/deployProcess/${deploymentId}/${toEnvId}/$digest?listenerStatus=${listenerStatus}
+    curl -s -X POST -u $authToken -H &quot;${h1}&quot; -H &quot;${h2}&quot; $URL &gt; out.json
+done	</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.20">
+      <bindings>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>authToken</credentialsId>
+          <variable>authToken</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+      </bindings>
+    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
+    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.0">
+      <folderProperties>
+        <properties>
+          <com.mig82.folders.properties.StringProperty>
+            <key>h1</key>
+            <value>Accept: application/json</value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>h2</key>
+            <value>Content-Type: application/json</value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>accountId</key>
+            <value></value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>baseURL</key>
+            <value>https://api.boomi.com/api/rest/v1/$accountId</value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>SCRIPTS_HOME</key>
+            <value>/var/jenkins_home/cli/scripts</value>
+          </com.mig82.folders.properties.StringProperty>
+          <com.mig82.folders.properties.StringProperty>
+            <key>SONAR_PROJECT_KEY</key>
+            <value>boomi</value>
+          </com.mig82.folders.properties.StringProperty>
+        </properties>
+      </folderProperties>
+    </com.mig82.folders.wrappers.ParentFolderBuildWrapper>
+  </buildWrappers>
+</project>

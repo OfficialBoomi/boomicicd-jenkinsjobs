@@ -1,0 +1,247 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<com.cloudbees.hudson.plugins.folder.Folder plugin="cloudbees-folder@6.11.1">
+  <actions/>
+  <description>The Boomi CICD jobs for the above account</description>
+  <properties>
+    <com.cloudbees.hudson.plugins.folder.properties.FolderCredentialsProvider_-FolderCredentialsProperty>
+      <domainCredentialsMap class="hudson.util.CopyOnWriteMap$Hash">
+        <entry>
+          <com.cloudbees.plugins.credentials.domains.Domain plugin="credentials@2.3.3">
+            <specifications/>
+          </com.cloudbees.plugins.credentials.domains.Domain>
+          <java.util.concurrent.CopyOnWriteArrayList>
+            <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
+              <id>authToken</id>
+              <description>Boomi API Authentication Token</description>
+              <secret>{AQAAABAAAAAQFmeR/ZF/mdVkdrySKw2sj1MSnkokGSPfsvqf+GBUXc8=}</secret>
+            </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
+            <com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl plugin="credentials@2.3.3">
+              <id>git_id</id>
+              <description>Git username and password</description>
+              <username>username</username>
+              <password>{AQAAABAAAAAQLJS1uVSO2QS55a7fWH89tFJ5azL/7ne0Y3eRjx+Hy1I=}</password>
+            </com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>
+            <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
+              <id>sonarToken</id>
+              <description>Token for Sonar</description>
+              <secret>{AQAAABAAAAAQTPyR2NvdlcGvQeZQ0a1RWAetK+QOTwNj6dutnoITDNk=}</secret>
+            </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
+          </java.util.concurrent.CopyOnWriteArrayList>
+        </entry>
+      </domainCredentialsMap>
+    </com.cloudbees.hudson.plugins.folder.properties.FolderCredentialsProvider_-FolderCredentialsProperty>
+    <org.jenkinsci.plugins.docker.workflow.declarative.FolderConfig plugin="docker-workflow@1.22">
+      <dockerLabel></dockerLabel>
+      <registry plugin="docker-commons@1.16"/>
+    </org.jenkinsci.plugins.docker.workflow.declarative.FolderConfig>
+    <com.mig82.folders.properties.FolderProperties plugin="folder-properties@1.1">
+      <properties>
+        <com.mig82.folders.properties.StringProperty>
+          <key>h1</key>
+          <value>Accept: application/json</value>
+        </com.mig82.folders.properties.StringProperty>
+        <com.mig82.folders.properties.StringProperty>
+          <key>h2</key>
+          <value>Content-Type: application/json</value>
+        </com.mig82.folders.properties.StringProperty>
+        <com.mig82.folders.properties.StringProperty>
+          <key>accountId</key>
+          <value>[Update the accountId here]</value>
+        </com.mig82.folders.properties.StringProperty>
+        <com.mig82.folders.properties.StringProperty>
+          <key>baseURL</key>
+          <value>https://api.boomi.com/api/rest/v1/$accountId</value>
+        </com.mig82.folders.properties.StringProperty>
+        <com.mig82.folders.properties.StringProperty>
+          <key>SCRIPTS_HOME</key>
+          <value>/var/jenkins_home/cli/scripts</value>
+        </com.mig82.folders.properties.StringProperty>
+        <com.mig82.folders.properties.StringProperty>
+          <key>SONAR_PROJECT_KEY</key>
+          <value>BoomiSonar</value>
+        </com.mig82.folders.properties.StringProperty>
+        <com.mig82.folders.properties.StringProperty>
+          <key>LOCAL_ATOM_INSTALL_DIR</key>
+          <value>/var/jenkins_home/boomi</value>
+        </com.mig82.folders.properties.StringProperty>
+        <com.mig82.folders.properties.StringProperty>
+          <key>DEFAULT_GIT_REPO</key>
+          <value>[Update Git User Here]</value>
+        </com.mig82.folders.properties.StringProperty>
+      </properties>
+    </com.mig82.folders.properties.FolderProperties>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.config.FolderConfig plugin="pipeline-model-definition@1.5.1">
+      <dockerLabel></dockerLabel>
+      <registry plugin="docker-commons@1.16"/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.config.FolderConfig>
+  </properties>
+  <folderViews class="com.cloudbees.hudson.plugins.folder.views.DefaultFolderViewHolder">
+    <views>
+      <hudson.model.AllView>
+        <owner class="com.cloudbees.hudson.plugins.folder.Folder" reference="../../../.."/>
+        <name>all</name>
+        <filterExecutors>false</filterExecutors>
+        <filterQueue>false</filterQueue>
+        <properties class="hudson.model.View$PropertyList"/>
+      </hudson.model.AllView>
+      <hudson.model.ListView>
+        <owner class="com.cloudbees.hudson.plugins.folder.Folder" reference="../../../.."/>
+        <name>Installation Jobs</name>
+        <filterExecutors>false</filterExecutors>
+        <filterQueue>false</filterQueue>
+        <properties class="hudson.model.View$PropertyList"/>
+        <jobNames>
+          <comparator class="hudson.util.CaseInsensitiveComparator"/>
+          <string>Create Cloud Atom</string>
+          <string>Create Environment</string>
+          <string>Create Environment and Attach Atom</string>
+          <string>Delete Atom and Env</string>
+          <string>Delete Local Atom</string>
+          <string>Fetch Environment Names</string>
+          <string>Get Cloud Installer Token</string>
+          <string>Get Installer Token</string>
+          <string>Install Local Atom</string>
+          <string>List All Environments</string>
+          <string>Query Atom</string>
+          <string>Update Shared Server</string>
+        </jobNames>
+        <jobFilters/>
+        <columns>
+          <hudson.views.StatusColumn/>
+          <hudson.views.WeatherColumn/>
+          <hudson.views.JobColumn/>
+          <hudson.views.LastSuccessColumn/>
+          <hudson.views.LastFailureColumn/>
+          <hudson.views.LastDurationColumn/>
+          <hudson.views.BuildButtonColumn/>
+        </columns>
+        <recurse>false</recurse>
+      </hudson.model.ListView>
+      <hudson.model.ListView>
+        <owner class="com.cloudbees.hudson.plugins.folder.Folder" reference="../../../.."/>
+        <name>Continuous Deployment (Process)</name>
+        <filterExecutors>false</filterExecutors>
+        <filterQueue>false</filterQueue>
+        <properties class="hudson.model.View$PropertyList"/>
+        <jobNames>
+          <comparator class="hudson.util.CaseInsensitiveComparator" reference="../../../hudson.model.ListView/jobNames/comparator"/>
+          <string>Continuous Process Deployment Pipeline</string>
+          <string>Continuous Process Deployment Pipeline Sonar and GIT</string>
+          <string>Create Process Schedule</string>
+          <string>Deploy Local Process and Publish to GIT</string>
+          <string>Deploy Local Process_SonarQube_Publish to GIT</string>
+          <string>Deploy Multiple Processes</string>
+          <string>Execute Process</string>
+          <string>Promote Multiple Processes</string>
+          <string>Promote Process</string>
+          <string>Query Execution Record</string>
+          <string>Undeploy Process</string>
+        </jobNames>
+        <jobFilters/>
+        <columns>
+          <hudson.views.StatusColumn/>
+          <hudson.views.WeatherColumn/>
+          <hudson.views.JobColumn/>
+          <hudson.views.LastSuccessColumn/>
+          <hudson.views.LastFailureColumn/>
+          <hudson.views.LastDurationColumn/>
+          <hudson.views.BuildButtonColumn/>
+        </columns>
+        <recurse>false</recurse>
+      </hudson.model.ListView>
+      <hudson.model.ListView>
+        <owner class="com.cloudbees.hudson.plugins.folder.Folder" reference="../../../.."/>
+        <name>Operations Jobs</name>
+        <filterExecutors>false</filterExecutors>
+        <filterQueue>false</filterQueue>
+        <properties class="hudson.model.View$PropertyList"/>
+        <jobNames>
+          <comparator class="hudson.util.CaseInsensitiveComparator" reference="../../../hudson.model.ListView/jobNames/comparator"/>
+          <string>Change All Listener Status</string>
+          <string>Change Listener Status</string>
+          <string>Execute Process</string>
+          <string>Query Execution Record</string>
+          <string>Start Local Atom</string>
+          <string>Stop Local Atom</string>
+          <string>Update Process Schedule Status</string>
+        </jobNames>
+        <jobFilters/>
+        <columns>
+          <hudson.views.StatusColumn/>
+          <hudson.views.WeatherColumn/>
+          <hudson.views.JobColumn/>
+          <hudson.views.LastSuccessColumn/>
+          <hudson.views.LastFailureColumn/>
+          <hudson.views.LastDurationColumn/>
+          <hudson.views.BuildButtonColumn/>
+        </columns>
+        <recurse>false</recurse>
+      </hudson.model.ListView>
+      <hudson.model.ListView>
+        <owner class="com.cloudbees.hudson.plugins.folder.Folder" reference="../../../.."/>
+        <name>Continuous Deployment (Package)</name>
+        <filterExecutors>false</filterExecutors>
+        <filterQueue>false</filterQueue>
+        <properties class="hudson.model.View$PropertyList"/>
+        <jobNames>
+          <comparator class="hudson.util.CaseInsensitiveComparator" reference="../../../hudson.model.ListView/jobNames/comparator"/>
+          <string>Continuous Package Deployment Pipeline</string>
+          <string>Create Packages</string>
+          <string>Create Process Schedule</string>
+          <string>Deploy Packages</string>
+          <string>Execute Process</string>
+          <string>List Processes</string>
+          <string>Publish Package to GIT and Sonar</string>
+          <string>Publish Packages to GIT</string>
+          <string>Query Execution Record</string>
+          <string>Undeploy Package</string>
+        </jobNames>
+        <jobFilters/>
+        <columns>
+          <hudson.views.StatusColumn/>
+          <hudson.views.WeatherColumn/>
+          <hudson.views.JobColumn/>
+          <hudson.views.LastSuccessColumn/>
+          <hudson.views.LastFailureColumn/>
+          <hudson.views.LastDurationColumn/>
+          <hudson.views.BuildButtonColumn/>
+        </columns>
+        <recurse>false</recurse>
+      </hudson.model.ListView>
+      <hudson.model.ListView>
+        <owner class="com.cloudbees.hudson.plugins.folder.Folder" reference="../../../.."/>
+        <name>Publish Reports</name>
+        <filterExecutors>false</filterExecutors>
+        <filterQueue>false</filterQueue>
+        <properties class="hudson.model.View$PropertyList"/>
+        <jobNames>
+          <comparator class="hudson.util.CaseInsensitiveComparator" reference="../../../hudson.model.ListView/jobNames/comparator"/>
+          <string>List All Environments</string>
+          <string>List Atoms</string>
+          <string>List Deployed Packages</string>
+          <string>List Package Components</string>
+          <string>List Processes</string>
+        </jobNames>
+        <jobFilters/>
+        <columns>
+          <hudson.views.StatusColumn/>
+          <hudson.views.WeatherColumn/>
+          <hudson.views.JobColumn/>
+          <hudson.views.LastSuccessColumn/>
+          <hudson.views.LastFailureColumn/>
+          <hudson.views.LastDurationColumn/>
+          <hudson.views.BuildButtonColumn/>
+        </columns>
+        <recurse>false</recurse>
+      </hudson.model.ListView>
+    </views>
+    <primaryView>all</primaryView>
+    <tabBar class="hudson.views.DefaultViewsTabBar"/>
+  </folderViews>
+  <healthMetrics>
+    <com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric>
+      <nonRecursive>false</nonRecursive>
+    </com.cloudbees.hudson.plugins.folder.health.WorstChildHealthMetric>
+  </healthMetrics>
+  <icon class="com.cloudbees.hudson.plugins.folder.icons.StockFolderIcon"/>
+</com.cloudbees.hudson.plugins.folder.Folder>
