@@ -74,6 +74,13 @@ Click on List Atoms Job
 And click on Build Now
 Once the build is compelete open refresh the output and select the html report
 
+## Run Jobs
+To run any of the Jobs listed below:
+- Click on the appropriate tab/job name
+- Select "Build with Parameters"
+- Pass the required parameters and click Build
+- Review the console output or Jenkins run output for success/error notifications
+
 ## List of Jobs
 |Job Name| Notes|
 |------|-----|
@@ -93,7 +100,8 @@ Once the build is compelete open refresh the output and select the html report
 |Deploy Packages| Creates and Deploys multiple-packages using componentIds or processNames to an Environment |
 |Execute Process| Executes a process on a given Atom |
 |Get Installer Token| Get a InstallerToken |
-|Install Local Atom| Install an Atom local to Jenkinse |
+|Get Cloud Installer Token| Get a InstallerToken for a Cloud Molecule. Must pass the cloudId|
+|Install Local Atom| Install an Atom local to Jenkins |
 |List All Environments| Publishes a report of all Environments |
 |List Atoms| Publishes a report of all Atoms |
 |List Deployed Packages| Publishes a report of Deployed Components in an Env |
@@ -117,5 +125,3 @@ You can clone the existing Boomi Folder and change the required Account properti
 
 # Support
 This image is not supported at this time. Please leave your comments at https://community.boomi.com/s/group/0F91W0000008r5WSAQ/devops-boomi
-
-

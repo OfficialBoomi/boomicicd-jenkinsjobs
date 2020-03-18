@@ -9,8 +9,8 @@ source bin/installerToken.sh atomType=${atomType}</description>
       <parameterDefinitions>
         <hudson.model.StringParameterDefinition>
           <name>atomType</name>
-          <description>Atom Type = Atom or Molecule</description>
-          <defaultValue>Molecule</defaultValue>
+          <description>Atom Type = ATOM or MOLECULE</description>
+          <defaultValue>ATOM</defaultValue>
           <trim>true</trim>
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>

@@ -26,7 +26,7 @@
   <builders>
     <hudson.tasks.Shell>
       <command>cd ${SCRIPTS_HOME}
-source ./bin/installerToken.sh atomType=Cloud
+source ./bin/installerToken.sh atomType="CLOUD"
 echo $tokenId</command>
     </hudson.tasks.Shell>
   </builders>
