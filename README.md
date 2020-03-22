@@ -35,7 +35,7 @@ Configure Jenkins to connect to Boomi Account. (This assume firewall/proxy b/w J
 * Update the the folder properties Name: LOCAL_ATOM_INSTALL_DIR Value: <ATOM_INSTALL_DIR on Jenkins>
 * Update the the folder properties Name: DEFAULT_GIT_REPO Value: <GIT Repo URL if using GIT>
 * Click the folder Credentials
-* Update the authToken to the Boomi API Token (Format) **BOOMI_TOKEN.user@company.com:bOomi-aPi-ToKen**
+* Update the authToken to the Boomi API Token (Format) <b>BOOMI_TOKEN.user@company.com:bOomi-aPi-ToKen</b>
 * Click Rename and rename the folder name to Account_YOUR ACCOUNT
 
 
@@ -52,7 +52,7 @@ Check out https://hub.docker.com/repository/docker/boomicicd/sonar
 Go to http://localhost:8080/configureTools/
 * Scroll down to SonarQube Scanner
 * <b>SonarQube Scanner</b> Boomi Sonar
-* <b>Install from Maven Central<b> Choose 4.2.0.1873 (latest as of March 2020)
+* <b>Install from Maven Central</b> Choose 4.2.0.1873 (latest as of March 2020)
   
 Go to http://localhost:8080/configure
 
