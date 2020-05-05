@@ -5,7 +5,7 @@ This repository has the Jenkins Jobs required to launch Boomi CI/CD reference im
 ## Pre-requistes
 Must need administration access on Jenkins server and accesss to the Jenkins file system to install the jobs. This version only works on a Unix/Linux implementation of Jenkins. 
 
-  - Install the CLI utility and its pre-requisites in the Jenkins server from [here](https://github.com/integrationguru/boomicicd-cli)
+  - Install the CLI utility and its pre-requisites in the Jenkins server from [here](https://github.com/OfficialBoomi/boomicicd-cli)
   - Install the following Jenkins plugins required for Boomi CI/CD
       - git
       - cloudbees-folder
