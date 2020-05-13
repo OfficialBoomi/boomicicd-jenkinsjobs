@@ -1,19 +1,20 @@
 <?xml version='1.1' encoding='UTF-8'?>
 <project>
   <actions/>
-  <description>Creates a Process Schedule for a Process in an Atom&#xd;
+  <description>Creates a packaged component item.&#xd;
+If the package with the same version exists, a new package is not created. If the package is deployed, the deployment step is ignored. &#xd;
+Optionally store the package components in GIT and run SonarQube static code analysis on the package&#xd;
 &#xd;
-source bin/updateProcessSchedules.sh atomName=${atomName} atomType=${atomType} processName=${processName}|componentId=${componentId} years=${years} months=${months} daysOfMonth=${daysOfMonth} daysOfWeek=${daysOfWeek} hours=${hours} minutes=${minutes}&#xd;
-</description>
+source bin/createPackage.sh</description>
   <keepDependencies>false</keepDependencies>
   <properties>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
         <hudson.model.StringParameterDefinition>
           <name>componentId</name>
-          <description>Enter either componentId or process name.</description>
+          <description>Id of the component to be packaged and deployed if this value is null component name will be used instead.</description>
           <defaultValue></defaultValue>
-          <trim>true</trim>
+          <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>processName</name>
@@ -22,60 +23,39 @@ source bin/updateProcessSchedules.sh atomName=${atomName} atomType=${atomType} p
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>atomName</name>
-          <description>Name of the atom</description>
+          <name>packageVersion</name>
+          <description>Version of the Package to be created</description>
           <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>atomType</name>
-          <description>Atom Type</description>
-          <defaultValue>*</defaultValue>
+          <name>notes</name>
+          <description>Notes </description>
+          <defaultValue>This package is ...</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>years</name>
-          <description>Cron Job Year Run</description>
-          <defaultValue>*</defaultValue>
+          <name>componentType</name>
+          <description></description>
+          <defaultValue>process</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>months</name>
-          <description>Cron Job Month Run</description>
-          <defaultValue>*</defaultValue>
+          <name>componentVersion</name>
+          <description>If no value is specified the latest component version will be used to create the package.</description>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>days</name>
-          <description>Cron Job Day Run </description>
-          <defaultValue>*</defaultValue>
+          <name>extractComponentXmlFolder</name>
+          <description>If this value is set the component XMLs with the package will be extracted. This may take up to 2 minutes to extract all components of the package</description>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>hours</name>
-          <description>Hours to run the job</description>
-          <defaultValue>8-18</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>minutes</name>
-          <description>Minutes to run escape / with a \. 
-</description>
-          <defaultValue>0-59\/15</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>daysOfWeek</name>
-          <description>Day of the Week to Run the Job
-1 is Sunday and 7 is Saturday.</description>
-          <defaultValue>2,3,4,5,6</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>daysOfMonth</name>
-          <description>Day of the Month to Run the Job
-1 to 31</description>
-          <defaultValue>*</defaultValue>
+          <name>tag</name>
+          <description>If this value is set the component XML will be stored in GIT. In the ${gitRepoURL} configured.</description>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
@@ -91,8 +71,9 @@ source bin/updateProcessSchedules.sh atomName=${atomName} atomType=${atomType} p
   <builders>
     <hudson.tasks.Shell>
       <command>cd ${SCRIPTS_HOME}
-source bin/updateProcessSchedules.sh
-echo $scheduleId</command>
+saveNotes=&quot;Triggered by jenkins user ${BUILD_USER_ID} ... ${notes}&quot;
+source ./bin/createPackage.sh notes=${saveNotes}
+echo $packageId</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>
@@ -103,8 +84,17 @@ echo $scheduleId</command>
           <credentialsId>authToken</credentialsId>
           <variable>authToken</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>gitRepoURL</credentialsId>
+          <variable>gitRepoURL</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>sonarToken</credentialsId>
+          <variable>sonarToken</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
       </bindings>
     </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
     <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.2.1"/>
+    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.5"/>
   </buildWrappers>
 </project>

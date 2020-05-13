@@ -7,11 +7,8 @@ Must need administration access on Jenkins server and accesss to the Jenkins fil
 
   - Install the CLI utility and its pre-requisites in the Jenkins server from [here](https://github.com/integrationguru/boomicicd-cli)
   - Install the following Jenkins plugins required for Boomi CI/CD
-      - git
       - cloudbees-folder
       - folder-properties
-      - sonar 
-      - sonar-quality-gates
       - purge-job-history 
       - build-publisher 
       - htmlpublisher 
@@ -26,47 +23,23 @@ Restart Jenkins after copying the folder.
 # Configuring Boomi Account 
 
 Configure Jenkins to connect to Boomi Account. (This assume firewall/proxy b/w Jenkins and Boomi AtomSphere is set)
-* Login to Jenkins and select the Account {Rename} folder & click configure
+* Login to Jenkins and select the Account {Rename} folder & click configure. Review and update all the fields as required.
 * Update the Display Name
 * Update the the folder properties Name: accountId Value: <>
 * Update the the folder properties Name: SCRIPTS_HOME Value: <Full path of CLI /scripts folder>
-* Update the the folder properties Name: SCRIPTS_HOME Value: <Full path of CLI /scripts folder>
-* Update the the folder properties Name: SONAR_PROJECT_KEY Value: <Name of SonarProject (if using Sonar)>
+* Update the the folder properties Name: SONAR_HOME Value: <Full path of CLI / sonar-scanner folder>
 * Update the the folder properties Name: LOCAL_ATOM_INSTALL_DIR Value: <ATOM_INSTALL_DIR on Jenkins>
-* Update the the folder properties Name: DEFAULT_GIT_REPO Value: <GIT Repo URL if using GIT>
+* Update the the folder properties Name: gitRepoURL Value: <GIT Repo URL if using GIT>. If GIT requires credentials use a secretText below
+* Update the the folder properties Name: gitUserName Value: <git --config global.username>. 
+* Update the the folder properties Name: gitUserEmail Value: <git --config global.email>. 
+* Update the the folder properties Name: sonarHostURL Value: <GIT Repo URL if using GIT>. 
+* Update the the folder properties Name: sonarProjectKey Value: <Name of SonarProject (if using Sonar)>
 * Click the folder Credentials
 * Update the authToken to the Boomi API Token (Format) <b>BOOMI_TOKEN.user@company.com:bOomi-aPi-ToKen-<b>
+* Update the sonarToken
+* Update the gitRepoURL<If the gitRepo has username and password>
 * Click Rename and rename the folder name to Account_YOUR ACCOUNT
 
-
-## Advance Settings (GIT)
-* Click the folder Credentials
-* Update the git_id with GIT username and password
-* Under the Account Folder search for all Jobs that have GIT (there should be 4)
-* Click configure on each job and update the ${GIT_REPO} URL to point to your GIT repository where the component files will be uploaded.
-
-## Advance Settings (SonarQube)
-Configure external SonarQube for Boomi code quality checks. If you don't have an existing SonarQube installation. 
-Check out https://hub.docker.com/repository/docker/boomicicd/sonar
-
-Go to http://localhost:8080/configureTools/
-* Scroll down to SonarQube Scanner
-* <b>SonarQube Scanner</b> Boomi Sonar
-* <b>Install from Maven Central<b> Choose 4.2.0.1873 (latest as of March 2020)
-  
-Go to http://localhost:8080/configure
-
-* Identify the SonarQube host server url  
-* Scroll down to SonarQube servers
-* Add a SonarQube servers
-*  <b>Name</b> Boomi Sonar 
-*  <b>Server URL</b> http://sonarhost:9000/
-  
-* Scroll down to <b>Quality Gates - Sonarqube</b>
-*  <b>Name</b> Boomi Sonar 
-*  <b>SonarQube Server URL</b> http://sonarhost:9000/
-*  <b>SonarQube account token</b> 82e12d4fcdfd583f963e680c63dd85d441c738e8
-* The SonarQube account token is used in the SonarQube docker image: boomicicd/sonar:latest	
 
 ## Run your first Job
 Click on the Account folder, select the the Publish Reports tab 
@@ -91,13 +64,15 @@ To run any of the Jobs listed below:
 |Create Cloud Atom| Creates a Cloud Atom in a given Cloud |
 |Create Environment| Creates an Environment in an Account |
 |Create Environment and Attach Atom| Creates Environment and attaches an Atom |
-|Create Packages| Creates Package Deployment for multiple packages using processName or componentId |
+|Create Packages| Creates Package Deployment for a single packages using processName or componentId. Alt will publish a report to GIT and integrate with SonarQube |
+|Create Packages| Creates Package Deployment for multiple packages using processNames or componentIds. Alt will publish a report to GIT and integrate with SonarQube |
 |Create Process Schedule|Creates Basic Process Schedule. For Advance schedules pleas use the AtomSphere UI|
 |Delete Atom and Env| Delete Atom and Attached Environment  |
 |Delete Local Atom| Deletes Local Atom (Local deployed on Jenkins) |
 |Deploy Local Process and Publish to GIT| Deploy a process to Local Atom and extract the component XML to GIT (Legacy Deployment) |
 |Deploy Multiple Processes| Deploy multiple-processes to an Environment (Legacy)|
-|Deploy Packages| Creates and Deploys multiple-packages using componentIds or processNames to an Environment |
+|Deploy Package| Creates and Deploy a single package using componentId or processName to an Environment. Alt will publish a report to GIT and integrate with SonarQube |
+|Deploy Packages| Creates and Deploys multiple-packages using componentIds or processNames to an Environment. Alt will publish a report to GIT and integrate with SonarQube |
 |Execute Process| Executes a process on a given Atom |
 |Get Installer Token| Get a InstallerToken |
 |Get Cloud Installer Token| Get a InstallerToken for a Cloud Molecule. Must pass the cloudId|

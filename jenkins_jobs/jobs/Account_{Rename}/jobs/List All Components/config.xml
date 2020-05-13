@@ -1,41 +1,15 @@
 <?xml version='1.1' encoding='UTF-8'?>
 <project>
   <actions/>
-  <description>Updates Process Schedule for a Process in an Atom&#xd;
-&#xd;
-source bin/updateProcessScheduleStatus.sh </description>
+  <description>Publishes a report of components in the packages identified</description>
   <keepDependencies>false</keepDependencies>
   <properties>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
         <hudson.model.StringParameterDefinition>
-          <name>componentId</name>
-          <description>Enter either componentId or process name.</description>
+          <name>packageIds</name>
+          <description>Comma separate list of package id names.</description>
           <defaultValue></defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>processName</name>
-          <description>Name of the Process to be Packaged</description>
-          <defaultValue></defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>atomName</name>
-          <description>Name of the atom</description>
-          <defaultValue></defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>atomType</name>
-          <description>Atom Type</description>
-          <defaultValue>*</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>status</name>
-          <description>Enabled Status must be true or false</description>
-          <defaultValue>true</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
@@ -51,11 +25,27 @@ source bin/updateProcessScheduleStatus.sh </description>
   <builders>
     <hudson.tasks.Shell>
       <command>cd ${SCRIPTS_HOME}
-source bin/updateProcessScheduleStatus.sh
-echo $scheduleId</command>
+source ./bin/publishPackagedComponentMetadata.sh packageIds=&quot;${packageIds}&quot; &gt; &quot;${WORKSPACE}/index.html&quot;
+</command>
     </hudson.tasks.Shell>
   </builders>
-  <publishers/>
+  <publishers>
+    <htmlpublisher.HtmlPublisher plugin="htmlpublisher@1.23">
+      <reportTargets>
+        <htmlpublisher.HtmlPublisherTarget>
+          <reportName>List Packaged Components</reportName>
+          <reportDir>.</reportDir>
+          <reportFiles>index.html</reportFiles>
+          <alwaysLinkToLastBuild>true</alwaysLinkToLastBuild>
+          <reportTitles></reportTitles>
+          <keepAll>true</keepAll>
+          <allowMissing>true</allowMissing>
+          <includes>**/*</includes>
+          <escapeUnderscores>true</escapeUnderscores>
+        </htmlpublisher.HtmlPublisherTarget>
+      </reportTargets>
+    </htmlpublisher.HtmlPublisher>
+  </publishers>
   <buildWrappers>
     <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.23">
       <bindings>

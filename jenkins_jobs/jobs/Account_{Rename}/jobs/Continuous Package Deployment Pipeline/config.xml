@@ -1,5 +1,5 @@
 <?xml version='1.1' encoding='UTF-8'?>
-<flow-definition plugin="workflow-job@2.36">
+<flow-definition plugin="workflow-job@2.39">
   <actions/>
   <description>This pipeline &#xd;
 Deploys Multiple Process&#xd;
@@ -21,6 +21,12 @@ Promotes Process into Next Environment</description>
           <description>Comma separated values of process</description>
           <defaultValue></defaultValue>
           <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>componentType</name>
+          <description>Default componentType of these components. If using mixed componentTypes. Keep this blank.</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>packageVersion</name>
@@ -72,20 +78,14 @@ Promotes Process into Next Environment</description>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>LocalEnvironment</name>
-          <description>Name of the local environment to deploy code for GIT</description>
-          <defaultValue>#jenkins</defaultValue>
+          <name>extractComponentXmlFolder</name>
+          <description>If this value is set the component XMLs with the package will be extracted. This may take up to 2 minutes to extract all components of the package</description>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>LocalAtomName</name>
-          <description>Name of the local atom to extract files for</description>
-          <defaultValue>jenkins01</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>TAG_NAME</name>
-          <description>TAG_NAME to created TAG. If TAG is empty GIT promotion is ignored.</description>
+          <name>tag</name>
+          <description>If this value is set the component XML will be stored in GIT. In the ${gitRepoURL} configured.</description>
           <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
@@ -95,7 +95,7 @@ Promotes Process into Next Environment</description>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.80">
     <script>node {
     stage(&apos;Deploy to Dev&apos;) {
-       build job: &apos;Deploy Packages&apos;, parameters: [[$class: &apos;StringParameterValue&apos;, name: &apos;componentIds&apos;, value: componentIds], [$class: &apos;StringParameterValue&apos;, name: &apos;processNames&apos;, value: processNames], [$class: &apos;StringParameterValue&apos;, name: &apos;env&apos;, value: InitialEnvironment], [$class: &apos;StringParameterValue&apos;, name: &apos;notes&apos;, value: notes], [$class: &apos;StringParameterValue&apos;, name: &apos;packageVersion&apos;, value: packageVersion], [$class: &apos;StringParameterValue&apos;, name: &apos;listenerStatus&apos;, value: &apos;RUNNING&apos;]]
+       build job: &apos;Deploy Packages&apos;, parameters: [[$class: &apos;StringParameterValue&apos;, name: &apos;componentIds&apos;, value: componentIds], [$class: &apos;StringParameterValue&apos;, name: &apos;processNames&apos;, value: processNames], [$class: &apos;StringParameterValue&apos;, name: &apos;env&apos;, value: InitialEnvironment], [$class: &apos;StringParameterValue&apos;, name: &apos;notes&apos;, value: notes], [$class: &apos;StringParameterValue&apos;, name: &apos;packageVersion&apos;, value: packageVersion], [$class: &apos;StringParameterValue&apos;, name: &apos;listenerStatus&apos;, value: &apos;RUNNING&apos;],[$class: &apos;StringParameterValue&apos;, name: &apos;extractComponentXmlFolder&apos;, value: extractComponentXmlFolder],[$class: &apos;StringParameterValue&apos;, name: &apos;tag&apos;, value: tag],[$class: &apos;StringParameterValue&apos;, name: &apos;componentType&apos;, value: componentType]]
     }    
     stage(&apos;Deploy Test Process&apos;) {
         build job: &apos;Deploy Packages&apos;, parameters: [[$class: &apos;StringParameterValue&apos;, name: &apos;componentIds&apos;, value: TestProcessId], [$class: &apos;StringParameterValue&apos;, name: &apos;processNames&apos;, value: TestProcessName], [$class: &apos;StringParameterValue&apos;, name: &apos;env&apos;, value: InitialEnvironment], [$class: &apos;StringParameterValue&apos;, name: &apos;notes&apos;, value: notes], [$class: &apos;StringParameterValue&apos;, name: &apos;packageVersion&apos;, value: packageVersion]]            
@@ -106,19 +106,8 @@ Promotes Process into Next Environment</description>
     stage(&apos;Validate Test Process&apos;) {
         build job: &apos;Query Execution Record&apos;, parameters: [[$class: &apos;StringParameterValue&apos;, name: &apos;processName&apos;, value: TestProcessName], [$class: &apos;StringParameterValue&apos;, name: &apos;componentId&apos;, value: TestProcessId], [$class: &apos;StringParameterValue&apos;, name: &apos;env&apos;, value: InitialEnvironment], [$class: &apos;StringParameterValue&apos;, name: &apos;atomName&apos;, value: atomName], [$class: &apos;StringParameterValue&apos;, name: &apos;checkStatus&apos;, value: &apos;true&apos;]]                
     } 
-    script{
-        if ( !TAG_NAME.isEmpty()) {
-            String deploy=&quot;true&quot;
-                if (InitialEnvironment == LocalEnvironment) {
-                    deploy=&quot;false&quot;
-            }
-            stage (&apos;Publish to GIT &apos;) {
-                 build job: &apos;Publish Packages to GIT&apos;, parameters: [[$class: &apos;StringParameterValue&apos;, name: &apos;componentIds&apos;, value: componentIds], [$class: &apos;StringParameterValue&apos;, name: &apos;processNames&apos;, value: processNames], [$class: &apos;StringParameterValue&apos;, name: &apos;env&apos;, value: LocalEnvironment], [$class: &apos;StringParameterValue&apos;, name: &apos;atomName&apos;, value: LocalAtomName], [$class: &apos;StringParameterValue&apos;, name: &apos;notes&apos;, value: notes], [$class: &apos;StringParameterValue&apos;, name: &apos;packageVersion&apos;, value: packageVersion], [$class: &apos;StringParameterValue&apos;, name: &apos;listenerStatus&apos;, value: &apos;RUNNING&apos;], [$class: &apos;StringParameterValue&apos;, name: &apos;TAG_NAME&apos;, value: TAG_NAME], [$class: &apos;StringParameterValue&apos;, name: &apos;deploy&apos;, value: deploy]]
-            }
-        }
-    }
     stage(&apos;Code Promotion&apos;) {
-       build job: &apos;Deploy Packages&apos;, parameters: [[$class: &apos;StringParameterValue&apos;, name: &apos;componentIds&apos;, value: componentIds], [$class: &apos;StringParameterValue&apos;, name: &apos;processNames&apos;, value: processNames], [$class: &apos;StringParameterValue&apos;, name: &apos;env&apos;, value: PromotionEnvironment], [$class: &apos;StringParameterValue&apos;, name: &apos;notes&apos;, value: notes], [$class: &apos;StringParameterValue&apos;, name: &apos;packageVersion&apos;, value: packageVersion], [$class: &apos;StringParameterValue&apos;, name: &apos;listenerStatus&apos;, value: listenerStatus]]
+       build job: &apos;Deploy Packages&apos;, parameters: [[$class: &apos;StringParameterValue&apos;, name: &apos;componentIds&apos;, value: componentIds], [$class: &apos;StringParameterValue&apos;, name: &apos;processNames&apos;, value: processNames], [$class: &apos;StringParameterValue&apos;, name: &apos;env&apos;, value: PromotionEnvironment], [$class: &apos;StringParameterValue&apos;, name: &apos;notes&apos;, value: notes], [$class: &apos;StringParameterValue&apos;, name: &apos;packageVersion&apos;, value: packageVersion], [$class: &apos;StringParameterValue&apos;, name: &apos;listenerStatus&apos;, value: listenerStatus],[$class: &apos;StringParameterValue&apos;, name: &apos;extractComponentXmlFolder&apos;, value: &apos;&apos;],[$class: &apos;StringParameterValue&apos;, name: &apos;tag&apos;, value: &apos;&apos;],[$class: &apos;StringParameterValue&apos;, name: &apos;componentType&apos;, value: componentType]]
     }
     
 }</script>

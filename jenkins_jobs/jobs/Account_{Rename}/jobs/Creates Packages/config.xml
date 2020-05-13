@@ -1,30 +1,25 @@
 <?xml version='1.1' encoding='UTF-8'?>
 <project>
   <actions/>
-  <description>Creates a packaged component and deploys the package to a given environment&#xd;
+  <description>Creates a packaged component item of multiple components.&#xd;
 If the package with the same version exists, a new package is not created. If the package is deployed, the deployment step is ignored. &#xd;
-Optionally store the package components in GIT and run SonarQube static code analysis on the package&#xd;
+Optionally store the package components in GIT and run SonarQube static code analysis on the package. The current version of the component will be used while creating this package. If other versions are required use createPackages. &#xd;
 &#xd;
-source bin/deployPackage.sh</description>
+&#xd;
+source bin/createPackages.sh</description>
   <keepDependencies>false</keepDependencies>
   <properties>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
         <hudson.model.StringParameterDefinition>
-          <name>env</name>
-          <description>Name of the Environment</description>
-          <defaultValue></defaultValue>
-          <trim>true</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>componentId</name>
-          <description>Ids of the components to be packaged and deployed if this value is null component names will be used instead.</description>
+          <name>componentIds</name>
+          <description>Comma separate list of the component IDs to be packaged and deployed if this value is null component names will be used instead.</description>
           <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>processName</name>
-          <description>Name of the component to be packaged and deployed</description>
+          <name>processNames</name>
+          <description>Comma separate list of the component names to be Packaged</description>
           <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
@@ -35,27 +30,15 @@ source bin/deployPackage.sh</description>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>notes</name>
-          <description>Notes </description>
-          <defaultValue>This package is ...</defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
           <name>componentType</name>
           <description></description>
           <defaultValue>process</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>componentVersion</name>
-          <description>If no value is specified the latest component version will be used to create the package.</description>
-          <defaultValue></defaultValue>
-          <trim>false</trim>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>listenerStatus</name>
-          <description>Default listenerStatus</description>
-          <defaultValue>RUNNING</defaultValue>
+          <name>notes</name>
+          <description>Notes </description>
+          <defaultValue>This package is ...</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
@@ -84,8 +67,8 @@ source bin/deployPackage.sh</description>
     <hudson.tasks.Shell>
       <command>cd ${SCRIPTS_HOME}
 saveNotes=&quot;Triggered by jenkins user ${BUILD_USER_ID} ... ${notes}&quot;
-source ./bin/deployPackage.sh notes=${saveNotes}
-echo $deploymentId</command>
+source ./bin/createPackages.sh notes=${saveNotes}
+echo $packageId</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>

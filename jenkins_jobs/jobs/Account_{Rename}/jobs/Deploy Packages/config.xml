@@ -1,10 +1,12 @@
 <?xml version='1.1' encoding='UTF-8'?>
 <project>
   <actions/>
-  <description>Creates packages from multiple processes and deploys the package to a given environment&#xd;
-If package with the same version exists, a new package is not created. If the packageID is deployed, the deployment step is ignored&#xd;
+  <description>Creates multiple packaged components and deploys the packages to a given environment&#xd;
+If the package with the same version exists, a new package is not created. If the package is deployed, the deployment step is ignored. &#xd;
+Optionally store the package components in GIT and run SonarQube static code analysis on the package.&#xd;
+The latest version of the component is packaged. Use Create Package or Deploy Package to create/deploy different component version.&#xd;
 &#xd;
-source bin/deployPackage.sh env=${env} processName=${processName} packageVersion=${packageVersion} createdBy=${createdBy} notes=${notes} listenerStatus=${listenerStatus}</description>
+source bin/deployPackages.sh</description>
   <keepDependencies>false</keepDependencies>
   <properties>
     <hudson.model.ParametersDefinitionProperty>
@@ -17,33 +19,51 @@ source bin/deployPackage.sh env=${env} processName=${processName} packageVersion
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>componentIds</name>
-          <description>Component Id of to create and deploy. If null processNames are used instead.</description>
+          <description>Comma separate list of component IDs to be packaged and deployed if this value is null component names will be used instead</description>
           <defaultValue></defaultValue>
-          <trim>true</trim>
+          <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>processNames</name>
-          <description>Comma separated list of processes</description>
+          <description>Comma separate list of component names to be packaged and deployed</description>
           <defaultValue></defaultValue>
-          <trim>true</trim>
+          <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>packageVersion</name>
           <description>Version of the Package to be created</description>
           <defaultValue></defaultValue>
-          <trim>true</trim>
+          <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>notes</name>
           <description>Notes </description>
           <defaultValue>This package is ...</defaultValue>
-          <trim>true</trim>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>componentType</name>
+          <description>Default component type of these components. If using mixed component types. Keep this blank.</description>
+          <defaultValue>process</defaultValue>
+          <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>listenerStatus</name>
           <description>Default listenerStatus</description>
           <defaultValue>RUNNING</defaultValue>
-          <trim>true</trim>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>extractComponentXmlFolder</name>
+          <description>If this value is set the component XMLs with the package will be extracted. This may take up to 2 minutes to extract all components of the package</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>tag</name>
+          <description>If this value is set the component XML will be stored in GIT. In the ${gitRepoURL} configured.</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
@@ -58,60 +78,30 @@ source bin/deployPackage.sh env=${env} processName=${processName} packageVersion
   <builders>
     <hudson.tasks.Shell>
       <command>cd ${SCRIPTS_HOME}
-
-saveNotes=&quot;Triggered by Jenkins user: ${BUILD_USER_ID}. ${notes}&quot;
-savePackageVersion=&quot;${packageVersion}&quot;
-saveListenerStatus=&quot;${listenerStatus}&quot;
-source bin/queryEnvironment.sh env=&quot;${env}&quot; classification=&quot;*&quot;
-toEnvId=$envId
-
-if [ -z &quot;${componentIds}&quot; ]
-then
-    IFS=&apos;,&apos; ;for processName in `echo &quot;${processNames}&quot;`; 
-    do 
-        notes=&quot;${saveNotes}&quot;
-        packageVersion=&quot;${savePackageVersion}&quot;
-        envId=${toEnvId}
-        listenerStatus=&quot;${saveListenerStatus}&quot;
-        processName=`echo &quot;${processName}&quot; | xargs`
-        saveProcessName=&quot;${processName}&quot;
-        source bin/queryProcess.sh processName=&quot;${processName}&quot;
-        source bin/createPackagedComponent.sh componentId=${componentId} componentType=&quot;Process&quot; packageVersion=${packageVersion} notes=&quot;${notes}&quot;
-        
-        notes=&quot;${saveNotes}&quot;
-        source bin/createDeployedPackage.sh envId=${envId} listenerStatus=&quot;${listenerStatus}&quot; packageId=$packageId notes=&quot;$notes&quot;
-        echo &quot;Deployed package for ${saveProcessName} with deployment $deploymentId&quot;
-    done
-    
- else
-    IFS=&apos;,&apos; ;for componentId in `echo &quot;${componentIds}&quot;`; 
-    do 
-        notes=&quot;${saveNotes}&quot;
-        packageVersion=&quot;${savePackageVersion}&quot;
-        envId=${toEnvId}
-        listenerStatus=&quot;${saveListenerStatus}&quot;
-        componentId=`echo &quot;${componentId}&quot; | xargs`
-        saveComponentId=&quot;${componentId}&quot;
-        source bin/createPackagedComponent.sh componentId=${componentId} componentType=&quot;Process&quot; packageVersion=${packageVersion} notes=&quot;${notes}&quot;
-        
-        notes=&quot;${saveNotes}&quot;
-        source bin/createDeployedPackage.sh envId=${envId} listenerStatus=&quot;${listenerStatus}&quot; packageId=$packageId notes=&quot;$notes&quot;
-        echo &quot;Deployed package for ${saveComponentId} with deployment $deploymentId&quot;
-    done
- fi</command>
+saveNotes=&quot;Triggered by jenkins user ${BUILD_USER_ID} ... ${notes}&quot;
+source ./bin/deployPackages.sh notes=${saveNotes}
+echo $deploymentId</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>
   <buildWrappers>
-    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.21">
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.23">
       <bindings>
         <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
           <credentialsId>authToken</credentialsId>
           <variable>authToken</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>gitRepoURL</credentialsId>
+          <variable>gitRepoURL</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>sonarToken</credentialsId>
+          <variable>sonarToken</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
       </bindings>
     </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
-    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.1"/>
+    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.2.1"/>
     <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.5"/>
   </buildWrappers>
 </project>
