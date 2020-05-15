@@ -34,16 +34,10 @@ Configure Jenkins to connect to Boomi Account. (This assume firewall/proxy b/w J
 * Update the the folder properties Name: gitUserEmail Value: <git --config global.email>. 
 * Update the the folder properties Name: sonarHostURL Value: <GIT Repo URL if using GIT>. 
 * Update the the folder properties Name: sonarProjectKey Value: <Name of SonarProject (if using Sonar)>
-* Click the folder Credentials
-<<<<<<< HEAD
-* Update the authToken to the Boomi API Token (Format) <b>BOOMI_TOKEN.user@company.com:bOomi-aPi-ToKen-<b>
+* <b>Click the folder Credentials</b>
+* Update the authToken to the Boomi API Token (Format) <b>BOOMI_TOKEN.user@company.com:bOomi-aPi-ToKen-</b>
 * Update the sonarToken
 * Update the gitRepoURL<If the gitRepo has username and password>
-* Click Rename and rename the folder name to Account_YOUR ACCOUNT
-
-
-=======
-* Update the authToken to the Boomi API Token (Format) <b>BOOMI_TOKEN.user@company.com:bOomi-aPi-ToKen</b>
 * Click Rename and rename the folder name to Account_YOUR ACCOUNT
 
 ## Run your first Job
