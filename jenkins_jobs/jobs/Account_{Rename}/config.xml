@@ -1,29 +1,29 @@
 <?xml version='1.1' encoding='UTF-8'?>
-<com.cloudbees.hudson.plugins.folder.Folder plugin="cloudbees-folder@6.12">
+<com.cloudbees.hudson.plugins.folder.Folder plugin="cloudbees-folder@6.14">
   <actions/>
   <description>The Boomi CICD jobs for the above account</description>
   <properties>
     <com.cloudbees.hudson.plugins.folder.properties.FolderCredentialsProvider_-FolderCredentialsProperty>
       <domainCredentialsMap class="hudson.util.CopyOnWriteMap$Hash">
         <entry>
-          <com.cloudbees.plugins.credentials.domains.Domain plugin="credentials@2.3.7">
+          <com.cloudbees.plugins.credentials.domains.Domain plugin="credentials@2.3.12">
             <specifications/>
           </com.cloudbees.plugins.credentials.domains.Domain>
           <java.util.concurrent.CopyOnWriteArrayList>
             <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
               <id>authToken</id>
               <description>Boomi API Authentication Token</description>
-              <secret>{AQAAABAAAAAQLM0Z8JHTPlXfjuwI/i/8KtsUD5zV0RLaANQr10pKsQQ=}</secret>
+              <secret>{AQAAABAAAAAQxyZNiN/iLoD1H4Csz5Mij/YMn9Ha+WTOXqBk9ADEVKk=}</secret>
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
             <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
               <id>sonarToken</id>
               <description>Token for Sonar</description>
-              <secret>{AQAAABAAAAAQRpAt32n0H8P6nuQ9hv6wAT017cIyNucPOu9sxIXNMMQ=}</secret>
+              <secret>{AQAAABAAAABAqF+Jif3dzIMTHms4RwD02trVPSF9FLMJ3rOH1vzdsvO/ScMRq5UTR+lsThu/srT09BuB+i9c1n/0WzjwR7GRhO8Z2nhnMTvpy85rmwH14ao=}</secret>
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
             <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
               <id>gitRepoURL</id>
               <description>GIT Repo URL including secrets https://user:pass@giturl.com</description>
-              <secret>{AQAAABAAAAAQt8GnsKlDNYeDtL9gymhftgKpQ8uVnIYP3iTqeZr1W1k=}</secret>
+              <secret>{AQAAABAAAAAQ2w5iWb4/rK5jN7k1X8l6f7/whwWqdaNXYZBqRQRaknY=}</secret>
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
           </java.util.concurrent.CopyOnWriteArrayList>
         </entry>
@@ -31,7 +31,7 @@
     </com.cloudbees.hudson.plugins.folder.properties.FolderCredentialsProvider_-FolderCredentialsProperty>
     <org.jenkinsci.plugins.docker.workflow.declarative.FolderConfig plugin="docker-workflow@1.23">
       <dockerLabel></dockerLabel>
-      <registry plugin="docker-commons@1.16"/>
+      <registry plugin="docker-commons@1.17"/>
     </org.jenkinsci.plugins.docker.workflow.declarative.FolderConfig>
     <com.mig82.folders.properties.FolderProperties plugin="folder-properties@1.2.1">
       <properties>
@@ -45,7 +45,7 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>accountId</key>
-          <value>[Update accountId here]</value>
+          <value>[Update Boomi accountId here.]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>baseURL</key>
@@ -69,19 +69,19 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>sonarHostURL</key>
-          <value>[Update sonarHostURL here]</value>
+          <value>[Update SonarHost URL here. Or remove entry if not using Sonar]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitRepoName</key>
-          <value>[Update gitRepoName here]</value>
+          <value>Account_Boomi_AjayNatarajan</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitUserName</key>
-          <value>[Update gitUserName here]</value>
+          <value>[Update gitUserName here.]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitUserEmail</key>
-          <value>[Update gitUserEmail here]</value>
+          <value>[Update gitUserEmailURL here.]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitOption</key>
@@ -89,7 +89,7 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitRepoURL</key>
-          <value>[If your repo contains passwords add it to the folder credentials]</value>
+          <value>[[Update gitRepoURLhere. If your repo contains passwords add it to the folder credentials]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>SLEEP_TIMER</key>
@@ -117,7 +117,7 @@
       </hudson.model.AllView>
       <hudson.model.ListView>
         <owner class="com.cloudbees.hudson.plugins.folder.Folder" reference="../../../.."/>
-        <name>Installation Jobs</name>
+        <name>2. Installation Jobs</name>
         <filterExecutors>false</filterExecutors>
         <filterQueue>false</filterQueue>
         <properties class="hudson.model.View$PropertyList"/>
@@ -150,39 +150,7 @@
       </hudson.model.ListView>
       <hudson.model.ListView>
         <owner class="com.cloudbees.hudson.plugins.folder.Folder" reference="../../../.."/>
-        <name>Continuous Deployment (Process)</name>
-        <filterExecutors>false</filterExecutors>
-        <filterQueue>false</filterQueue>
-        <properties class="hudson.model.View$PropertyList"/>
-        <jobNames>
-          <comparator class="hudson.util.CaseInsensitiveComparator" reference="../../../hudson.model.ListView/jobNames/comparator"/>
-          <string>Continuous Process Deployment Pipeline</string>
-          <string>Continuous Process Deployment Pipeline Sonar and GIT</string>
-          <string>Create Process Schedule</string>
-          <string>Deploy Local Process and Publish to GIT</string>
-          <string>Deploy Local Process_SonarQube_Publish to GIT</string>
-          <string>Deploy Multiple Processes</string>
-          <string>Execute Process</string>
-          <string>Promote Multiple Processes</string>
-          <string>Promote Process</string>
-          <string>Query Execution Record</string>
-          <string>Undeploy Process</string>
-        </jobNames>
-        <jobFilters/>
-        <columns>
-          <hudson.views.StatusColumn/>
-          <hudson.views.WeatherColumn/>
-          <hudson.views.JobColumn/>
-          <hudson.views.LastSuccessColumn/>
-          <hudson.views.LastFailureColumn/>
-          <hudson.views.LastDurationColumn/>
-          <hudson.views.BuildButtonColumn/>
-        </columns>
-        <recurse>false</recurse>
-      </hudson.model.ListView>
-      <hudson.model.ListView>
-        <owner class="com.cloudbees.hudson.plugins.folder.Folder" reference="../../../.."/>
-        <name>Operations Jobs</name>
+        <name>3. Operations Jobs</name>
         <filterExecutors>false</filterExecutors>
         <filterQueue>false</filterQueue>
         <properties class="hudson.model.View$PropertyList"/>
@@ -194,6 +162,7 @@
           <string>Query Execution Record</string>
           <string>Start Local Atom</string>
           <string>Stop Local Atom</string>
+          <string>Update Environment Extensions</string>
           <string>Update Process Schedule Status</string>
         </jobNames>
         <jobFilters/>
@@ -210,7 +179,7 @@
       </hudson.model.ListView>
       <hudson.model.ListView>
         <owner class="com.cloudbees.hudson.plugins.folder.Folder" reference="../../../.."/>
-        <name>Continuous Deployment (Package)</name>
+        <name>1. Packaged Component</name>
         <filterExecutors>false</filterExecutors>
         <filterQueue>false</filterQueue>
         <properties class="hudson.model.View$PropertyList"/>
@@ -224,10 +193,9 @@
           <string>Deploy Packages</string>
           <string>Execute Process</string>
           <string>List Processes</string>
-          <string>Publish Package to GIT and Sonar</string>
-          <string>Publish Packages to GIT</string>
           <string>Query Execution Record</string>
           <string>Undeploy Package</string>
+          <string>Update Environment Extensions</string>
         </jobNames>
         <jobFilters/>
         <columns>
@@ -243,7 +211,7 @@
       </hudson.model.ListView>
       <hudson.model.ListView>
         <owner class="com.cloudbees.hudson.plugins.folder.Folder" reference="../../../.."/>
-        <name>Publish Reports</name>
+        <name>4. Publish Reports</name>
         <filterExecutors>false</filterExecutors>
         <filterQueue>false</filterQueue>
         <properties class="hudson.model.View$PropertyList"/>

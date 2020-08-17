@@ -17,10 +17,11 @@
 echo $WORKSPACE
 source ./bin/publishAtom.sh  &gt; &quot;${WORKSPACE}/index.html&quot;
 echo $atomId</command>
+      <configuredLocalRules/>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
-    <htmlpublisher.HtmlPublisher plugin="htmlpublisher@1.22">
+    <htmlpublisher.HtmlPublisher plugin="htmlpublisher@1.23">
       <reportTargets>
         <htmlpublisher.HtmlPublisherTarget>
           <reportName>List All Atoms</reportName>
@@ -37,7 +38,7 @@ echo $atomId</command>
     </htmlpublisher.HtmlPublisher>
   </publishers>
   <buildWrappers>
-    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.21">
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.23">
       <bindings>
         <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
           <credentialsId>authToken</credentialsId>
@@ -45,6 +46,6 @@ echo $atomId</command>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
       </bindings>
     </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
-    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.1"/>
+    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.2.1"/>
   </buildWrappers>
 </project>

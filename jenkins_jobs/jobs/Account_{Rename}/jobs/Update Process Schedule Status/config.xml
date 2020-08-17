@@ -33,8 +33,8 @@ source bin/updateProcessScheduleStatus.sh </description>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>status</name>
-          <description>Enabled Status must be true or false</description>
+          <name>enabled</name>
+          <description>Enabled must be true or false</description>
           <defaultValue>true</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
