@@ -79,7 +79,7 @@ echo $packageId</command>
   </builders>
   <publishers>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>**.json</artifacts>
+      <artifacts>**.json, **.html</artifacts>
       <excludes>out*.json, tmp*.json</excludes>
       <allowEmptyArchive>false</allowEmptyArchive>
       <onlyIfSuccessful>true</onlyIfSuccessful>

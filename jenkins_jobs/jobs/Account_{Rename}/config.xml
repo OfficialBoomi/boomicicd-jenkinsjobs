@@ -13,17 +13,17 @@
             <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
               <id>authToken</id>
               <description>Boomi API Authentication Token</description>
-              <secret>{AQAAABAAAAAQxyZNiN/iLoD1H4Csz5Mij/YMn9Ha+WTOXqBk9ADEVKk=}</secret>
+              <secret>{AQAAABAAAAAQDr5TifRx/kQPk2XtM2TQrE9BIk7xcaR1icZVjXQ6/5c=}</secret>
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
             <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
               <id>sonarToken</id>
               <description>Token for Sonar</description>
-              <secret>{AQAAABAAAABAqF+Jif3dzIMTHms4RwD02trVPSF9FLMJ3rOH1vzdsvO/ScMRq5UTR+lsThu/srT09BuB+i9c1n/0WzjwR7GRhO8Z2nhnMTvpy85rmwH14ao=}</secret>
+              <secret>{AQAAABAAAAAQwdROne3+6X1uOr+tYzwAqv9buHog3RCMukDkYsCg4bs=}</secret>
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
             <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
               <id>gitRepoURL</id>
               <description>GIT Repo URL including secrets https://user:pass@giturl.com</description>
-              <secret>{AQAAABAAAAAQ2w5iWb4/rK5jN7k1X8l6f7/whwWqdaNXYZBqRQRaknY=}</secret>
+              <secret>{AQAAABAAAAAQ2tba6fCY/yFRor9cSOILM7doO1dQCvU2aDerkjc5eWI=}</secret>
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
           </java.util.concurrent.CopyOnWriteArrayList>
         </entry>
@@ -45,7 +45,7 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>accountId</key>
-          <value>[Update Boomi accountId here.]</value>
+          <value>[Update accountId here.]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>baseURL</key>
@@ -69,11 +69,11 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>sonarHostURL</key>
-          <value>[Update SonarHost URL here. Or remove entry if not using Sonar]</value>
+          <value></value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitRepoName</key>
-          <value>Account_Boomi_AjayNatarajan</value>
+          <value>[Update gitRepoName here.]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitUserName</key>
@@ -81,7 +81,7 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitUserEmail</key>
-          <value>[Update gitUserEmailURL here.]</value>
+          <value>[Update gitUserEmail here.]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitOption</key>
@@ -187,8 +187,8 @@
           <comparator class="hudson.util.CaseInsensitiveComparator" reference="../../../hudson.model.ListView/jobNames/comparator"/>
           <string>Continuous Package Deployment Pipeline</string>
           <string>Create Package</string>
+          <string>Create Packages</string>
           <string>Create Process Schedule</string>
-          <string>Creates Packages</string>
           <string>Deploy Package</string>
           <string>Deploy Packages</string>
           <string>Execute Process</string>
