@@ -103,6 +103,10 @@
           <key>sonarRulesFile</key>
           <value>${SCRIPTS_HOME}/conf/BoomiSonarRules.xml</value>
         </com.mig82.folders.properties.StringProperty>
+        <com.mig82.folders.properties.StringProperty>
+          <key>AWS_DEFAULT_REGION</key>
+          <value>us-east-2</value>
+        </com.mig82.folders.properties.StringProperty>
       </properties>
     </com.mig82.folders.properties.FolderProperties>
   </properties>
