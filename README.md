@@ -128,6 +128,7 @@ To run any of the Jobs listed below:
 |Stop Local Atom |Stop Local Atom |
 |Undeploy Package | Undeploy a Package component |
 |Undeploy Process | Undeploy a Process (Legacy) |
+|Update Environment Extensions | Use the JSON file created in the Create Package process to update envirnoment extensions. Use valueFrom to replace secret value with Variables|
 |Update Process Schedule Status |Update Process Schedule Status of a single process |
 |Update Shared Server |Update shared webserver details of a given Atom |
 

@@ -79,7 +79,7 @@ source bin/deployPackages.sh</description>
     <hudson.tasks.Shell>
       <command>cd ${SCRIPTS_HOME}
 saveNotes=&quot;Triggered by jenkins user ${BUILD_USER_ID} ... ${notes}&quot;
-source ./bin/deployPackages.sh notes=${saveNotes}
+source ./bin/deployPackages.sh notes=&quot;${saveNotes}&quot;
 echo $deploymentId</command>
     </hudson.tasks.Shell>
   </builders>
