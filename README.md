@@ -34,49 +34,13 @@ Configure Jenkins to connect to Boomi Account. (This assume firewall/proxy b/w J
 * Update the the folder properties Name: gitUserEmail Value: <git --config global.email>. 
 * Update the the folder properties Name: sonarHostURL Value: <GIT Repo URL if using GIT>. 
 * Update the the folder properties Name: sonarProjectKey Value: <Name of SonarProject (if using Sonar)>
-* Click the folder Credentials
-<<<<<<< HEAD
+
+# Click the folder Credentials
 * Update the authToken to the Boomi API Token (Format) <b>BOOMI_TOKEN.user@company.com:bOomi-aPi-ToKen-<b>
 * Update the sonarToken
 * Update the gitRepoURL<If the gitRepo has username and password>
 * Click Rename and rename the folder name to Account_YOUR ACCOUNT
 
-
-=======
-* Update the authToken to the Boomi API Token (Format) <b>BOOMI_TOKEN.user@company.com:bOomi-aPi-ToKen</b>
-* Click Rename and rename the folder name to Account_YOUR ACCOUNT
-
-
-## Advance Settings (GIT)
-* Click the folder Credentials
-* Update the git_id with GIT username and password
-* Under the Account Folder search for all Jobs that have GIT (there should be 4)
-* Click configure on each job and update the ${GIT_REPO} URL to point to your GIT repository where the component files will be uploaded.
-
-## Advance Settings (SonarQube)
-Configure external SonarQube for Boomi code quality checks. If you don't have an existing SonarQube installation. 
-Check out https://hub.docker.com/repository/docker/boomicicd/sonar
-
-Go to http://localhost:8080/configureTools/
-* Scroll down to SonarQube Scanner
-* <b>SonarQube Scanner</b> Boomi Sonar
-* <b>Install from Maven Central</b> Choose 4.2.0.1873 (latest as of March 2020)
-  
-Go to http://localhost:8080/configure
-
-* Identify the SonarQube host server url  
-* Scroll down to SonarQube servers
-* Add a SonarQube servers
-*  <b>Name</b> Boomi Sonar 
-*  <b>Server URL</b> http://sonarhost:9000/
-  
-* Scroll down to <b>Quality Gates - Sonarqube</b>
-*  <b>Name</b> Boomi Sonar 
-*  <b>SonarQube Server URL</b> http://sonarhost:9000/
-*  <b>SonarQube account token</b> 82e12d4fcdfd583f963e680c63dd85d441c738e8
-* The SonarQube account token is used in the SonarQube docker image: boomicicd/sonar:latest	
-
->>>>>>> ef200beb6f5b440cc2350a40fb9ab617f46d37eb
 ## Run your first Job
 Click on the Account folder, select the the Publish Reports tab 
 Click on List Atoms Job
