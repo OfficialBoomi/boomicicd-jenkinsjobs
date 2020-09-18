@@ -35,17 +35,18 @@ Configure Jenkins to connect to Boomi Account. (This assume firewall/proxy b/w J
 * Update the the folder properties Name: sonarHostURL Value: <GIT Repo URL if using GIT>. 
 * Update the the folder properties Name: sonarProjectKey Value: <Name of SonarProject (if using Sonar)>
 
-# Click the folder Credentials
+# Configure secrets
+* Selecte the Credentials menu from the left
 * Update the authToken to the Boomi API Token (Format) <b>BOOMI_TOKEN.user@company.com:bOomi-aPi-ToKen-<b>
 * Update the sonarToken
 * Update the gitRepoURL<If the gitRepo has username and password>
 * Click Rename and rename the folder name to Account_YOUR ACCOUNT
 
 ## Run your first Job
-Click on the Account folder, select the the Publish Reports tab 
-Click on List Atoms Job
-And click on Build Now
-Once the build is compelete open refresh the output and select the html report
+* Click on the Account folder, select the the Publish Reports tab 
+* Click on List Atoms Job
+* And click on Build Now
+* Once the build is compelete open refresh the output and select the html report
 
 ## Run Jobs
 To run any of the Jobs listed below:
@@ -98,6 +99,7 @@ To run any of the Jobs listed below:
 
 # Configuring Another Boomi Account on the same Jenkins
 You can clone the existing Boomi Folder and change the required Account properties to configure a new Account for Boomi CI/CD on the same Jenkins folder.
+Note: If the Build or Build with parameter menu is not available. Then disable the job and Enable this. Or restart the Jenkins.
 
 # Support
 This image is not supported at this time. Please leave your comments at https://community.boomi.com/s/group/0F91W0000008r5WSAQ/devops-boomi
