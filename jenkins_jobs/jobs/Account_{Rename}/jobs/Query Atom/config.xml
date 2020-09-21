@@ -39,11 +39,12 @@
       <command>cd ${SCRIPTS_HOME}
 source ./bin/queryAtom.sh
 echo $atomId</command>
+      <configuredLocalRules/>
     </hudson.tasks.Shell>
   </builders>
   <publishers/>
   <buildWrappers>
-    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.20">
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.23">
       <bindings>
         <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
           <credentialsId>authToken</credentialsId>
@@ -51,35 +52,6 @@ echo $atomId</command>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
       </bindings>
     </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
-    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.0">
-      <folderProperties>
-        <properties>
-          <com.mig82.folders.properties.StringProperty>
-            <key>h1</key>
-            <value>Accept: application/json</value>
-          </com.mig82.folders.properties.StringProperty>
-          <com.mig82.folders.properties.StringProperty>
-            <key>h2</key>
-            <value>Content-Type: application/json</value>
-          </com.mig82.folders.properties.StringProperty>
-          <com.mig82.folders.properties.StringProperty>
-            <key>accountId</key>
-            <value></value>
-          </com.mig82.folders.properties.StringProperty>
-          <com.mig82.folders.properties.StringProperty>
-            <key>baseURL</key>
-            <value>https://api.boomi.com/api/rest/v1/$accountId</value>
-          </com.mig82.folders.properties.StringProperty>
-          <com.mig82.folders.properties.StringProperty>
-            <key>SCRIPTS_HOME</key>
-            <value>/var/jenkins_home/cli/scripts</value>
-          </com.mig82.folders.properties.StringProperty>
-          <com.mig82.folders.properties.StringProperty>
-            <key>GIT_REPO</key>
-            <value>https://...git</value>
-          </com.mig82.folders.properties.StringProperty>
-        </properties>
-      </folderProperties>
-    </com.mig82.folders.wrappers.ParentFolderBuildWrapper>
+    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.2.1"/>
   </buildWrappers>
 </project>

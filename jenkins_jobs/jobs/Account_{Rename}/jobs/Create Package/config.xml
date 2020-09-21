@@ -72,11 +72,23 @@ source bin/createPackage.sh</description>
     <hudson.tasks.Shell>
       <command>cd ${SCRIPTS_HOME}
 saveNotes=&quot;Triggered by jenkins user ${BUILD_USER_ID} ... ${notes}&quot;
-source ./bin/createPackage.sh notes=${saveNotes}
+source ./bin/createPackage.sh notes=&quot;${saveNotes}&quot;
 echo $packageId</command>
+      <configuredLocalRules/>
     </hudson.tasks.Shell>
   </builders>
-  <publishers/>
+  <publishers>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>**.json, **.html</artifacts>
+      <excludes>out*.json, tmp*.json</excludes>
+      <allowEmptyArchive>false</allowEmptyArchive>
+      <onlyIfSuccessful>true</onlyIfSuccessful>
+      <fingerprint>false</fingerprint>
+      <defaultExcludes>true</defaultExcludes>
+      <caseSensitive>true</caseSensitive>
+      <followSymlinks>true</followSymlinks>
+    </hudson.tasks.ArtifactArchiver>
+  </publishers>
   <buildWrappers>
     <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.23">
       <bindings>
@@ -95,6 +107,6 @@ echo $packageId</command>
       </bindings>
     </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
     <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.2.1"/>
-    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.5"/>
+    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.6"/>
   </buildWrappers>
 </project>

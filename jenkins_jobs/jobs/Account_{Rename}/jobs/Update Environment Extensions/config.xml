@@ -1,0 +1,91 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Update Environment Extensions by passing the partial extension file from Create Package or Create Packages.</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>env</name>
+          <description>Name of the environment</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.TextParameterDefinition>
+          <name>extensionJson</name>
+          <description>Extension JSON of the format 
+{
+  &quot;@type&quot;: &quot;EnvironmentExtensions&quot;,
+  &quot;connections&quot;: {
+    },
+  &quot;environmentId&quot;: &quot;[Update ID]&quot;,
+  &quot;partial&quot;: &quot;true&quot;,
+  &quot;extensionGroupId&quot;: &quot;&quot;,
+  &quot;id&quot;: &quot;[Same as environmentId]&quot;
+}&apos;</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.TextParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>secret_1</name>
+          <description>Optional. First secret extension value.</description>
+          <defaultValue>{AQAAABAAAAAQ0JTjmZfRZdvk0mV/aqr6kv15swormd5GnSSLMfBQYZI=}</defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>secret_2</name>
+          <description>Optional. Second secret extension value.</description>
+          <defaultValue>{AQAAABAAAAAQZV6WCjdJ1fZ8XHid0/nbnoZY5YqMTWlsWL1slyFWaVM=}</defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>secret_3</name>
+          <description>Optional. Third secret extension value.</description>
+          <defaultValue>{AQAAABAAAAAQ2YW/KzXqIGUjBLkrs83A14t5TedMRReJdsAc8qfreP4=}</defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>secret_4</name>
+          <description>Optional. Fourth secret extension value.</description>
+          <defaultValue>{AQAAABAAAAAQKC/hsUZNXWUVNcYj1hUUdkWbJLzDSAOmo8LdMLj/KWY=}</defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>secret_5</name>
+          <description>Optional. Fifth secret extension value.</description>
+          <defaultValue>{AQAAABAAAAAQLROe9FOGLV1K8FumotoOCiohYMTsJYdbKBAIq5sTZw8=}</defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>secret_6</name>
+          <description>Optional. Sixth secret extension value.</description>
+          <defaultValue>{AQAAABAAAAAQKO+q82NQuUr1yM9MUamgnut1KQlsV/QSvNX23UJXjoE=}</defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>cd ${SCRIPTS_HOME}
+source ./bin/updateExtensions.sh
+echo $envId</command>
+      <configuredLocalRules/>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.23">
+      <bindings>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>authToken</credentialsId>
+          <variable>authToken</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+      </bindings>
+    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
+    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.2.1"/>
+    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.6"/>
+  </buildWrappers>
+</project>

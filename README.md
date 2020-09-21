@@ -36,17 +36,19 @@ Configure Jenkins to connect to Boomi Account. (This assume firewall/proxy b/w J
 * Update the the folder properties Name: gitUserEmail Value: <git --config global.email>. 
 * Update the the folder properties Name: sonarHostURL Value: <GIT Repo URL if using GIT>. 
 * Update the the folder properties Name: sonarProjectKey Value: <Name of SonarProject (if using Sonar)>
-* <b>Click the folder Credentials</b>
-* Update the authToken to the Boomi API Token (Format) <b>BOOMI_TOKEN.user@company.com:bOomi-aPi-ToKen-</b>
+
+# Configure secrets
+* Select the Credentials menu from the left
+* Update the authToken to the Boomi API Token (Format) *BOOMI_TOKEN.user@company.com:bOomi-aPi-ToKen-*
 * Update the sonarToken
 * Update the gitRepoURL<If the gitRepo has username and password>
 * Click Rename and rename the folder name to Account_YOUR ACCOUNT
 
 ## Run your first Job
-Click on the Account folder, select the the Publish Reports tab 
-Click on List Atoms Job
-And click on Build Now
-Once the build is compelete open refresh the output and select the html report
+* Click on the Account folder, select the the Publish Reports tab 
+* Click on List Atoms Job
+* And click on Build Now
+* Once the build is compelete open refresh the output and select the html report
 
 ## Run Jobs
 To run any of the Jobs listed below:
@@ -93,11 +95,13 @@ To run any of the Jobs listed below:
 |Stop Local Atom |Stop Local Atom |
 |Undeploy Package | Undeploy a Package component |
 |Undeploy Process | Undeploy a Process (Legacy) |
+|Update Environment Extensions | Use the JSON file created in the Create Package process to update envirnoment extensions. Use valueFrom to replace secret value with Variables|
 |Update Process Schedule Status |Update Process Schedule Status of a single process |
 |Update Shared Server |Update shared webserver details of a given Atom |
 
 # Configuring Another Boomi Account on the same Jenkins
 You can clone the existing Boomi Folder and change the required Account properties to configure a new Account for Boomi CI/CD on the same Jenkins folder.
+Note: If the Build or Build with parameter menu is not available. Then disable the job and Enable this. Or restart the Jenkins.
 
 # Support
 This image is not supported at this time. Please leave your comments at https://community.boomi.com/s/group/0F91W0000008r5WSAQ/devops-boomi
