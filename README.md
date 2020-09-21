@@ -13,10 +13,14 @@ Must need administration access on Jenkins server and accesss to the Jenkins fil
       - build-publisher 
       - htmlpublisher 
       - build-user-vars-plugin
+      - secure-requester-whitelist
    - Copy the Account_{Rename} folder under the ${JEN1KINS_HOME}/jobs directory on the Jenkins server
    - Manage Jenkins-> Configure System -> Go to jenkins-url/configure and set the Shell Executable
       - Scroll down to Shell
       - **Shell executable:** /bin/bash
+    - Manage Jenkins-> Configure Global Security ->
+      -  Scroll down to Authorize JSONP or primitive XPath requests by whitelist
+      -  Check the box "Allow requests without Referer"
 
 Restart Jenkins after copying the folder.
 
