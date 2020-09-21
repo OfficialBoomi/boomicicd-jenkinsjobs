@@ -30,13 +30,15 @@ Configure Jenkins to connect to Boomi Account. (This assume firewall/proxy b/w J
 * Update the the folder properties Name: SONAR_HOME Value: <Full path of CLI / sonar-scanner folder>
 * Update the the folder properties Name: LOCAL_ATOM_INSTALL_DIR Value: <ATOM_INSTALL_DIR on Jenkins>
 * Update the the folder properties Name: gitRepoURL Value: <GIT Repo URL if using GIT>. If GIT requires credentials use a secretText below
+* Update the the folder properties Name: gitRepoName Value: <Top level name of the GIT Repo; usually the part before .git>
+* Update the the folder properties Name: gitOption Value: <CLONE| TAG> if you use CLONE it clones the repo and pushes the content. Else creates a release tag (zip)
 * Update the the folder properties Name: gitUserName Value: <git --config global.username>. 
 * Update the the folder properties Name: gitUserEmail Value: <git --config global.email>. 
 * Update the the folder properties Name: sonarHostURL Value: <GIT Repo URL if using GIT>. 
 * Update the the folder properties Name: sonarProjectKey Value: <Name of SonarProject (if using Sonar)>
 
 # Configure secrets
-* Selecte the Credentials menu from the left
+* Select the Credentials menu from the left
 * Update the authToken to the Boomi API Token (Format) *BOOMI_TOKEN.user@company.com:bOomi-aPi-ToKen-*
 * Update the sonarToken
 * Update the gitRepoURL<If the gitRepo has username and password>
