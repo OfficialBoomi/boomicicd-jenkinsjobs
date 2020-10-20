@@ -2,34 +2,46 @@
 <com.cloudbees.hudson.plugins.folder.Folder plugin="cloudbees-folder@6.14">
   <actions/>
   <description>The Boomi CICD jobs for the above account</description>
+  <displayName>Account Boomi</displayName>
   <properties>
     <com.cloudbees.hudson.plugins.folder.properties.FolderCredentialsProvider_-FolderCredentialsProperty>
       <domainCredentialsMap class="hudson.util.CopyOnWriteMap$Hash">
         <entry>
-          <com.cloudbees.plugins.credentials.domains.Domain plugin="credentials@2.3.12">
+          <com.cloudbees.plugins.credentials.domains.Domain plugin="credentials@2.3.13">
             <specifications/>
           </com.cloudbees.plugins.credentials.domains.Domain>
           <java.util.concurrent.CopyOnWriteArrayList>
             <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
               <id>authToken</id>
               <description>Boomi API Authentication Token</description>
-              <secret>{AQAAABAAAAAQDr5TifRx/kQPk2XtM2TQrE9BIk7xcaR1icZVjXQ6/5c=}</secret>
+              <secret>{AQAAABAAAAAQ5hlTek0iV+vLqExUCezBYl0fXMxCgw+NyW6RS/5lt5o=}</secret>
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
             <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
               <id>sonarToken</id>
               <description>Token for Sonar</description>
-              <secret>{AQAAABAAAAAQwdROne3+6X1uOr+tYzwAqv9buHog3RCMukDkYsCg4bs=}</secret>
+              <secret>{AQAAABAAAABAbbsr+6NYQ5jcdl580hYhBegQP0O8mieR1J4++uOgUuKGtzmP8hWbiqnwibZGaW9aX8HEi2HZuJFWaGQuwbUH1zfyhHJV+/bUm7ed5+BExJo=}</secret>
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
             <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
               <id>gitRepoURL</id>
               <description>GIT Repo URL including secrets https://user:pass@giturl.com</description>
-              <secret>{AQAAABAAAAAQ2tba6fCY/yFRor9cSOILM7doO1dQCvU2aDerkjc5eWI=}</secret>
+              <secret>{AQAAABAAAAAQD8QBi1AeWeMvhB/dr0ndG7iBfMFUAK9UxEoW0aPOAqA=}</secret>
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
+            <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
+              <id>JENKINS_TOKEN</id>
+              <description>Token used by JENKINS_USER to trigger remote jobs</description>
+              <secret>{AQAAABAAAAAw4npz6Y8WBndIwRb7QD50m5iv2eS4WLtZI4DEleMhYrQln9t6m7b1bQAyCGC0VLa15rKEWVmPkuRT42YMCkpc2Q==}</secret>
+            </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
+            <com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl plugin="credentials@2.3.13">
+              <id>gitUserPassword</id>
+              <description>GIT User and Password for CICD</description>
+              <username>gitUser</username>
+              <password>{AQAAABAAAAAQzTjVRgVjW7bJixPScbjQKKQstXIoLOKHruqQN92Gr74=}</password>
+            </com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>
           </java.util.concurrent.CopyOnWriteArrayList>
         </entry>
       </domainCredentialsMap>
     </com.cloudbees.hudson.plugins.folder.properties.FolderCredentialsProvider_-FolderCredentialsProperty>
-    <org.jenkinsci.plugins.docker.workflow.declarative.FolderConfig plugin="docker-workflow@1.23">
+    <org.jenkinsci.plugins.docker.workflow.declarative.FolderConfig plugin="docker-workflow@1.24">
       <dockerLabel></dockerLabel>
       <registry plugin="docker-commons@1.17"/>
     </org.jenkinsci.plugins.docker.workflow.declarative.FolderConfig>
@@ -45,7 +57,7 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>accountId</key>
-          <value>[Update accountId here.]</value>
+          <value>boomi_ajaynatarajan-J8WVSQ</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>baseURL</key>
@@ -73,15 +85,15 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitRepoName</key>
-          <value>[Update gitRepoName here.]</value>
+          <value>[Update Git Repo Name here.]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitUserName</key>
-          <value>[Update gitUserName here.]</value>
+          <value>[Update Git User Name here.]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitUserEmail</key>
-          <value>[Update gitUserEmail here.]</value>
+          <value>[Update Git Email here.]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitOption</key>
@@ -105,7 +117,7 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>AWS_DEFAULT_REGION</key>
-          <value>us-east-2</value>
+          <value>[Update AWS Default Region here. Optional]</value>
         </com.mig82.folders.properties.StringProperty>
       </properties>
     </com.mig82.folders.properties.FolderProperties>
@@ -195,6 +207,7 @@
           <string>Create Process Schedule</string>
           <string>Deploy Package</string>
           <string>Deploy Packages</string>
+          <string>DynamicGitJob_Dev</string>
           <string>Execute Process</string>
           <string>List Processes</string>
           <string>Query Execution Record</string>

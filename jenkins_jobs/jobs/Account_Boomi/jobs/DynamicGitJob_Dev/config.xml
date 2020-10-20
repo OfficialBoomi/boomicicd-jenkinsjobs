@@ -1,0 +1,62 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Trigger Jenkins jobs by checking a Boomi configuration JSON file in GIT. Specify the GIT URL, GIT Branch below.  For running branch specific jobs this Jenkins job needs to be cloned and modified. &#xd;
+There is a JOB_ENV variable that restricts what Boomi environment these jobs can be run against. This is created to ensure production Jenkins jobs cannot be run by checking a file into a non-production GIT branch.  &#xd;
+GIT administrator need to ensure appropriate levels of control in the GIT branches; and restrict direct checking into master branch.</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@4.4.4">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>[Enter GIT Repo Here]</url>
+        <credentialsId>gitUserPassword</credentialsId>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>**</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions/>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers>
+    <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.31.0">
+      <spec></spec>
+    </com.cloudbees.jenkins.GitHubPushTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command># These properties can be set at the folder level
+export JENKINS_URL=&quot;http://localhost:8080/&quot;
+export JOB_URL_BASE=&quot;http://localhost:8080/job/Account_Boomi&quot;
+export JENKINS_USER=&quot;admin&quot;
+# Job specific property
+export JOB_ENV=&quot;Development&quot;
+${SCRIPTS_HOME}/bin/dynamicGitJobBuilder.sh
+</command>
+      <configuredLocalRules/>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.24">
+      <bindings>
+        <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+          <credentialsId>JENKINS_TOKEN</credentialsId>
+          <variable>JENKINS_TOKEN</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+      </bindings>
+    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
+    <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.2.1"/>
+    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.6"/>
+  </buildWrappers>
+</project>
