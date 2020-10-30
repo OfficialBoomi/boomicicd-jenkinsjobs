@@ -14,28 +14,28 @@
             <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
               <id>authToken</id>
               <description>Boomi API Authentication Token</description>
-              <secret>{AQAAABAAAAAQ5hlTek0iV+vLqExUCezBYl0fXMxCgw+NyW6RS/5lt5o=}</secret>
+              <secret>{AQAAABAAAAAQ+YyYq5Imfdi65le+AtyfAj0/r1xzy/lS0L/8JNgOkL0=}</secret>
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
             <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
               <id>sonarToken</id>
               <description>Token for Sonar</description>
-              <secret>{AQAAABAAAABAbbsr+6NYQ5jcdl580hYhBegQP0O8mieR1J4++uOgUuKGtzmP8hWbiqnwibZGaW9aX8HEi2HZuJFWaGQuwbUH1zfyhHJV+/bUm7ed5+BExJo=}</secret>
+              <secret>{AQAAABAAAACAs0t206sNUI27zgeIBZ5XIXHrhA4vGjLNlnOrTeZDMIhPQZ5rPqXMW+gLnmv0p586tRzOPnAL4TiUq2EN9xaagFNicAJH1u60r3umy1mDwyGizZDj2F/rwS4NqIy1OzpazbN7F5UUz2hZajra6nobWrCwwNzj+3utjQvEU4EN/QXloHT3iY5myZYOYTL3jmEd}</secret>
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
             <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
               <id>gitRepoURL</id>
               <description>GIT Repo URL including secrets https://user:pass@giturl.com</description>
-              <secret>{AQAAABAAAAAQD8QBi1AeWeMvhB/dr0ndG7iBfMFUAK9UxEoW0aPOAqA=}</secret>
+              <secret>{AQAAABAAAAAQe3FYYBAuzz+6A8szxSl3W4IhCNb8Qih8UMJiUyFD71E=}</secret>
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
             <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
               <id>JENKINS_TOKEN</id>
               <description>Token used by JENKINS_USER to trigger remote jobs</description>
-              <secret>{AQAAABAAAAAw4npz6Y8WBndIwRb7QD50m5iv2eS4WLtZI4DEleMhYrQln9t6m7b1bQAyCGC0VLa15rKEWVmPkuRT42YMCkpc2Q==}</secret>
+              <secret>{AQAAABAAAAAQZP/a2hGdm39BcTUoOThUJMX0SPjXHw5c9EJEddhkQVU=}</secret>
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
             <com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl plugin="credentials@2.3.13">
               <id>gitUserPassword</id>
               <description>GIT User and Password for CICD</description>
-              <username>gitUser</username>
-              <password>{AQAAABAAAAAQzTjVRgVjW7bJixPScbjQKKQstXIoLOKHruqQN92Gr74=}</password>
+              <username>GIT USERNAME</username>
+              <password>{AQAAABAAAAAQqrqr8c4W8a6YynS7k6KvwmPxr83oanIfk3dTc0F4gOI=}</password>
             </com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>
           </java.util.concurrent.CopyOnWriteArrayList>
         </entry>
@@ -57,7 +57,7 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>accountId</key>
-          <value>boomi_ajaynatarajan-J8WVSQ</value>
+          <value>[Update accountId HERE]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>baseURL</key>
@@ -85,15 +85,15 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitRepoName</key>
-          <value>[Update Git Repo Name here.]</value>
+          <value>[Update GIT REPO NAME HERE]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitUserName</key>
-          <value>[Update Git User Name here.]</value>
+          <value>[Update GIT USER NAME HERE]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitUserEmail</key>
-          <value>[Update Git Email here.]</value>
+          <value>[Update GIT USER EMAIL HERE]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitOption</key>
@@ -101,7 +101,7 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitRepoURL</key>
-          <value>[[Update gitRepoURLhere. If your repo contains passwords add it to the folder credentials]</value>
+          <value>[Update gitRepoURLhere. If your repo contains passwords add it to the folder credentials]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>SLEEP_TIMER</key>
@@ -117,7 +117,7 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>AWS_DEFAULT_REGION</key>
-          <value>[Update AWS Default Region here. Optional]</value>
+          <value>[Update AWS_DEFAULT_REGION HERE]</value>
         </com.mig82.folders.properties.StringProperty>
       </properties>
     </com.mig82.folders.properties.FolderProperties>

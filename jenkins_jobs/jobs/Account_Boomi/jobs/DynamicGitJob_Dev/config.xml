@@ -10,7 +10,7 @@ GIT administrator need to ensure appropriate levels of control in the GIT branch
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url>[Enter GIT Repo Here]</url>
+        <url>[Update GIT Configuration Repo URL Here]</url>
         <credentialsId>gitUserPassword</credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
