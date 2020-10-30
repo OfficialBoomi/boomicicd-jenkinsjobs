@@ -123,6 +123,7 @@ Note: If the Build or Build with parameter menu is not available. Then disable t
 * export JENKINS_USER="admin"
 * Update the property export JOB_ENV="Development" to point to the Boomi Development environment. 
 * This is to ensure the json configuration matches the target environment and prevent a Development config/job/git repo run jobs targetted to a non-development environment.
+* Jenkins job can send a status update back to GIT as part of the Post Build Step. For set up [here](https://medium.com/@applitools/how-to-update-jenkins-build-status-in-github-pull-requests-step-by-step-tutorial-bf213a2eacbe). Please note ?jenkins_token described above is deprecated. This has to be done for all relevent Jenkins jobs like Deploy Packages, Update Extensions...
 
 # Support
 This image is not supported at this time. Please leave your comments at https://community.boomi.com/s/group/0F91W0000008r5WSAQ/devops-boomi
