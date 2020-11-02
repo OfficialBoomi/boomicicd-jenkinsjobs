@@ -119,6 +119,10 @@
           <key>AWS_DEFAULT_REGION</key>
           <value>[Update AWS_DEFAULT_REGION HERE]</value>
         </com.mig82.folders.properties.StringProperty>
+        <com.mig82.folders.properties.StringProperty>
+          <key>GIT_API_URL</key>
+          <value>[Update GIT API URL to update commit status. https://api.github.com/repos/{username}/{git-config-repo}</value>
+        </com.mig82.folders.properties.StringProperty>
       </properties>
     </com.mig82.folders.properties.FolderProperties>
   </properties>

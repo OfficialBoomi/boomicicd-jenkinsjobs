@@ -53,6 +53,12 @@ source bin/createPackages.sh</description>
           <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>GIT_COMMIT</name>
+          <description>This value is passed in from Dynamic Job Builder and if present will update GIT with the status of the job</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
@@ -68,24 +74,65 @@ source bin/createPackages.sh</description>
       <command>cd ${SCRIPTS_HOME}
 saveNotes=&quot;Triggered by jenkins user ${BUILD_USER_ID} ... ${notes}&quot;
 source ./bin/createPackages.sh notes=&quot;${saveNotes}&quot;
-echo $packageId</command>
+echo $packageId
+echo &quot;GIT COMMIT - ${GIT_COMMIT}&quot;</command>
       <configuredLocalRules/>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>**.json,**.html</artifacts>
+      <artifacts>**.json, **.html</artifacts>
       <excludes>out*.json, tmp*.json</excludes>
-      <allowEmptyArchive>false</allowEmptyArchive>
-      <onlyIfSuccessful>false</onlyIfSuccessful>
+      <allowEmptyArchive>true</allowEmptyArchive>
+      <onlyIfSuccessful>true</onlyIfSuccessful>
       <fingerprint>false</fingerprint>
       <defaultExcludes>true</defaultExcludes>
       <caseSensitive>true</caseSensitive>
       <followSymlinks>false</followSymlinks>
     </hudson.tasks.ArtifactArchiver>
+    <org.jenkinsci.plugins.postbuildscript.PostBuildScript plugin="postbuildscript@2.11.0">
+      <config>
+        <scriptFiles>
+          <org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
+            <results>
+              <string>SUCCESS</string>
+            </results>
+            <role>BOTH</role>
+            <executeOn>BOTH</executeOn>
+            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${GIT_API_URL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=Create_Packages STATE=success</filePath>
+            <scriptType>GENERIC</scriptType>
+            <sandboxed>false</sandboxed>
+          </org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
+          <org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
+            <results>
+              <string>ABORTED</string>
+              <string>FAILURE</string>
+            </results>
+            <role>BOTH</role>
+            <executeOn>BOTH</executeOn>
+            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${GIT_API_URL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=Create_Packages STATE=failure</filePath>
+            <scriptType>GENERIC</scriptType>
+            <sandboxed>false</sandboxed>
+          </org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
+        </scriptFiles>
+        <groovyScripts/>
+        <buildSteps>
+          <org.jenkinsci.plugins.postbuildscript.model.PostBuildStep>
+            <results>
+              <string>FAILURE</string>
+            </results>
+            <role>BOTH</role>
+            <executeOn>BOTH</executeOn>
+            <buildSteps/>
+            <stopOnFailure>false</stopOnFailure>
+          </org.jenkinsci.plugins.postbuildscript.model.PostBuildStep>
+        </buildSteps>
+        <markBuildUnstable>false</markBuildUnstable>
+      </config>
+    </org.jenkinsci.plugins.postbuildscript.PostBuildScript>
   </publishers>
   <buildWrappers>
-    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.23">
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.24">
       <bindings>
         <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
           <credentialsId>authToken</credentialsId>
@@ -99,6 +146,10 @@ echo $packageId</command>
           <credentialsId>sonarToken</credentialsId>
           <variable>sonarToken</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+        <org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
+          <credentialsId>gitUserPassword</credentialsId>
+          <variable>GIT_AUTH</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
       </bindings>
     </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
     <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.2.1"/>
