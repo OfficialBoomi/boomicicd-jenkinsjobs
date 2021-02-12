@@ -30,33 +30,39 @@
         <hudson.model.PasswordParameterDefinition>
           <name>secret_1</name>
           <description>Optional. First secret extension value.</description>
-          <defaultValue>{AQAAABAAAAAQ0JTjmZfRZdvk0mV/aqr6kv15swormd5GnSSLMfBQYZI=}</defaultValue>
+          <defaultValue>{AQAAABAAAABACX9b5GBZChfNmdZ86mxMIBq6YiOpE450+zWf50v/S/juyoqaK7hL4BKEdGq9d+ugImABODHNMvvY1fYV3hk1RuBx0TVmgb9fshpIybgQO9c=}</defaultValue>
         </hudson.model.PasswordParameterDefinition>
         <hudson.model.PasswordParameterDefinition>
           <name>secret_2</name>
           <description>Optional. Second secret extension value.</description>
-          <defaultValue>{AQAAABAAAAAQZV6WCjdJ1fZ8XHid0/nbnoZY5YqMTWlsWL1slyFWaVM=}</defaultValue>
+          <defaultValue>{AQAAABAAAABAJYwZ2wNe8cbBULYx/ZhN3bMGZBFvI48sUXu6jFgbniGTFJlrrxQKu2oeMNDID7EiFCJcJzc8+7cfwPJwhDAjGtL7p8OBcoUTeBmdZVHGFDc=}</defaultValue>
         </hudson.model.PasswordParameterDefinition>
         <hudson.model.PasswordParameterDefinition>
           <name>secret_3</name>
           <description>Optional. Third secret extension value.</description>
-          <defaultValue>{AQAAABAAAAAQ2YW/KzXqIGUjBLkrs83A14t5TedMRReJdsAc8qfreP4=}</defaultValue>
+          <defaultValue>{AQAAABAAAABAxMhlcMNTe7l+3oAz3A6jDoZJblMgwi+tVKB/0rR7NccYlum5TcdRD/EIui7D5K3xi9xfBd0LqxvtUrCZZohXGVT3x8E4hjP4Ql3ids6DgvA=}</defaultValue>
         </hudson.model.PasswordParameterDefinition>
         <hudson.model.PasswordParameterDefinition>
           <name>secret_4</name>
           <description>Optional. Fourth secret extension value.</description>
-          <defaultValue>{AQAAABAAAAAQKC/hsUZNXWUVNcYj1hUUdkWbJLzDSAOmo8LdMLj/KWY=}</defaultValue>
+          <defaultValue>{AQAAABAAAABASPCNxpZXUvcMCpx3qirOArd9asucbwvY8/VPwvLqmwsGnU5sMyGCJoEiYNrp2wNlfEO5SKssRdZN7N3RC3daS4qfDzOmSCJXaWaNO05Jf5Y=}</defaultValue>
         </hudson.model.PasswordParameterDefinition>
         <hudson.model.PasswordParameterDefinition>
           <name>secret_5</name>
           <description>Optional. Fifth secret extension value.</description>
-          <defaultValue>{AQAAABAAAAAQLROe9FOGLV1K8FumotoOCiohYMTsJYdbKBAIq5sTZw8=}</defaultValue>
+          <defaultValue>{AQAAABAAAABAAxz1kN7Vyl/sVtbKcA4nwRZadUaaEXfCQucoUuefcj2nVDhMXd3ZvDSS9PWjrJyTr50fdPsClAVxoP3xZ5x3/RecKSL5K6Kw/VA+r/5lRnE=}</defaultValue>
         </hudson.model.PasswordParameterDefinition>
         <hudson.model.PasswordParameterDefinition>
           <name>secret_6</name>
           <description>Optional. Sixth secret extension value.</description>
-          <defaultValue>{AQAAABAAAAAQKO+q82NQuUr1yM9MUamgnut1KQlsV/QSvNX23UJXjoE=}</defaultValue>
+          <defaultValue>{AQAAABAAAABA1X3wEoTiuu3knKMe54MHL5F4tKYDyzp8AklDINMGE6gC1o9BquoFN90enUUrbu5EraywwTfbC+2SVc+7MeUzmOv/kvETCtlpgNgKlt/RfOM=}</defaultValue>
         </hudson.model.PasswordParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>GIT_COMMIT</name>
+          <description>This value is passed in from Dynamic Job Builder and if present will update GIT with the status of the job</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
@@ -75,14 +81,49 @@ echo $envId</command>
       <configuredLocalRules/>
     </hudson.tasks.Shell>
   </builders>
-  <publishers/>
+  <publishers>
+    <org.jenkinsci.plugins.postbuildscript.PostBuildScript plugin="postbuildscript@2.11.0">
+      <config>
+        <scriptFiles>
+          <org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
+            <results>
+              <string>SUCCESS</string>
+            </results>
+            <role>BOTH</role>
+            <executeOn>BOTH</executeOn>
+            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${GIT_API_URL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=Update_Environment_Extensions STATE=success</filePath>
+            <scriptType>GENERIC</scriptType>
+            <sandboxed>false</sandboxed>
+          </org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
+          <org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
+            <results>
+              <string>ABORTED</string>
+              <string>FAILURE</string>
+            </results>
+            <role>BOTH</role>
+            <executeOn>BOTH</executeOn>
+            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${GIT_API_URL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=Update_Environment_Extensions STATE=failure</filePath>
+            <scriptType>GENERIC</scriptType>
+            <sandboxed>false</sandboxed>
+          </org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
+        </scriptFiles>
+        <groovyScripts/>
+        <buildSteps/>
+        <markBuildUnstable>false</markBuildUnstable>
+      </config>
+    </org.jenkinsci.plugins.postbuildscript.PostBuildScript>
+  </publishers>
   <buildWrappers>
-    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.23">
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.24">
       <bindings>
         <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
           <credentialsId>authToken</credentialsId>
           <variable>authToken</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
+        <org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
+          <credentialsId>gitUserPassword</credentialsId>
+          <variable>GIT_AUTH</variable>
+        </org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
       </bindings>
     </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
     <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.2.1"/>
