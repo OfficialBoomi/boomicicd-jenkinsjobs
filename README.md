@@ -26,18 +26,19 @@ Restart Jenkins after copying the folder.
 
 # Configuring Boomi Account 
 
-Configure Jenkins to connect to Boomi Account. (This assume firewall/proxy b/w Jenkins and Boomi AtomSphere is set)
+Configure Jenkins to connect to Boomi Account. (This assume firewall/proxy b/w Jenkins and Boomi AtomSphere is set). There are two GIT repos that can be configured (both optional). One is the Git Component Repo where the component XMLs will be automatically stored. The other the GIT Release Repo where the Boomi components can be deployed using a release template. [Examples](https://github.com/OfficialBoomi/boomicicd-cli/tree/master/cli/scripts/templates/configurations)
 * Login to Jenkins and select the Account {Rename} folder & click configure. Review and update all the fields as required.
 * Update the Display Name
 * Update the the folder properties Name: accountId Value: <>
 * Update the the folder properties Name: SCRIPTS_HOME Value: <Full path of CLI /scripts folder>
 * Update the the folder properties Name: SONAR_HOME Value: <Full path of CLI / sonar-scanner folder>
 * Update the the folder properties Name: LOCAL_ATOM_INSTALL_DIR Value: <ATOM_INSTALL_DIR on Jenkins>
-* Update the the folder properties Name: gitRepoURL Value: <GIT Repo URL if using GIT>. If GIT requires credentials use a secretText below
-* Update the the folder properties Name: gitRepoName Value: <Top level name of the GIT Repo; usually the part before .git>
-* Update the the folder properties Name: gitOption Value: <CLONE| TAG> if you use CLONE it clones the repo and pushes the content. Else creates a release tag (zip)
-* Update the the folder properties Name: gitUserName Value: <git --config global.username>. 
-* Update the the folder properties Name: gitUserEmail Value: <git --config global.email>. 
+* Update the the folder properties Name: gitComponentRepoURL Value: <GIT Repo URL if using GIT>. If GIT requires credentials use a secretText below
+* Update the the folder properties Name: gitComponentRepoName Value: <Top level name of the GIT Repo; usually the part before .git>
+* Update the the folder properties Name: gitComponentOption Value: <CLONE| TAG> if you use CLONE it clones the repo and pushes the content. Else creates a release tag (zip)
+* Update the the folder properties Name: gitComponentUserName Value: <git --config global.username>. 
+* Update the the folder properties Name: gitComponentUserEmail Value: <git --config global.email>. 
+* Update the the folder properties Name: gitReleaseAPIURL Value: The API URI for the gitReleaseRepo
 * Update the the folder properties Name: sonarHostURL Value: <GIT Repo URL if using GIT>. 
 * Update the the folder properties Name: sonarProjectKey Value: <Name of SonarProject (if using Sonar)>
 
@@ -45,7 +46,9 @@ Configure Jenkins to connect to Boomi Account. (This assume firewall/proxy b/w J
 * Select the Credentials menu from the left
 * Update the authToken to the Boomi API Token (Format) *BOOMI_TOKEN.user@company.com:bOomi-aPi-ToKen-*
 * Update the sonarToken
-* Update the gitRepoURL<If the gitRepo has username and password>
+* Update the gitComponentRepoURL. If the gitComponentRepo has username and password
+* Update the gitReleaseRepoUserPassword. To connect to gitReleaseRepo to recieve WebHooks. [See](https://docs.github.com/en/developers/webhooks-and-events/webhooks) 
+* Update the gitReleaseRepoAPIToken. To connect gitReleaseRepo to update the commit status using an username and API token.
 * Click Rename and rename the folder name to Account_YOUR ACCOUNT
 
 ## Run your first Job
@@ -81,6 +84,7 @@ To run any of the Jobs listed below:
 |Deploy Package| Creates and Deploy a single package using componentId or processName to an Environment. Alt will publish a report to GIT and integrate with SonarQube |
 |Deploy Packages| Creates and Deploys multiple-packages using componentIds or processNames to an Environment. Alt will publish a report to GIT and integrate with SonarQube |
 |DynamicGitJob_Dev|This is the job points to the specific "Development" git branch. See notes below|
+|DynamicGitJob_Test|This is the job points to the specific "Test" git branch. See notes below|
 |Execute Process| Executes a process on a given Atom |
 |Get Installer Token| Get a InstallerToken |
 |Get Cloud Installer Token| Get a InstallerToken for a Cloud Molecule. Must pass the cloudId|
@@ -114,7 +118,7 @@ Note: If the Build or Build with parameter menu is not available. Then disable t
 * GIT adminstrators must ensure controls to limit access to non-development GIT branches. 
 * [Here](https://medium.com/faun/triggering-jenkins-build-on-push-using-github-webhooks-52d4361542d4) is a link to set up GIT & Jenkins to trigger Jenkins Build from GIT
 * Click Configure and update 
-* Source Code Management - [Enter GIT Repo Here]
+* Source Code Management - [Enter GIT Release Repo Here]
 * Credentials - Ensure the correct value is selected
 * Branches to build - This has to be set to the dev/* branch
 * In the build tab update. Note these properties can be set at the folder level or removed. If the JENKINS_URL is set. 
