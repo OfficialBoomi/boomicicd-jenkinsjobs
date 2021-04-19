@@ -72,7 +72,7 @@ source bin/createPackages.sh</description>
   <builders>
     <hudson.tasks.Shell>
       <command>cd ${SCRIPTS_HOME}
-saveNotes=&quot;Triggered by jenkins user ${BUILD_USER_ID} ... ${notes}&quot;
+saveNotes=&quot;Triggered by jenkins user ${BUILD_USER_ID}... ${notes}&quot;
 source ./bin/createPackages.sh notes=&quot;${saveNotes}&quot;
 echo $packageId
 echo &quot;GIT COMMIT - ${GIT_COMMIT}&quot;</command>
@@ -147,12 +147,12 @@ echo &quot;GIT COMMIT - ${GIT_COMMIT}&quot;</command>
           <variable>sonarToken</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
         <org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
-          <credentialsId>gitUserPassword</credentialsId>
+          <credentialsId>GIT_HUB_API_TOKEN</credentialsId>
           <variable>GIT_AUTH</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
       </bindings>
     </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
     <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.2.1"/>
-    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.6"/>
+    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.7"/>
   </buildWrappers>
 </project>

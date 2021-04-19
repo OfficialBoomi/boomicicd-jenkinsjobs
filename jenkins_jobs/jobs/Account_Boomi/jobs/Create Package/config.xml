@@ -113,6 +113,7 @@ echo &quot;PackageId is $packageId&quot;</command>
               <string>SUCCESS</string>
             </results>
             <role>BOTH</role>
+            <executeOn>BOTH</executeOn>
             <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${GIT_API_URL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=Create_Package STATE=success</filePath>
             <scriptType>GENERIC</scriptType>
             <sandboxed>false</sandboxed>
@@ -140,12 +141,12 @@ echo &quot;PackageId is $packageId&quot;</command>
           <variable>sonarToken</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
         <org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
-          <credentialsId>gitUserPassword</credentialsId>
+          <credentialsId>GIT_HUB_API_TOKEN</credentialsId>
           <variable>GIT_AUTH</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
       </bindings>
     </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
     <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.2.1"/>
-    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.6"/>
+    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.7"/>
   </buildWrappers>
 </project>

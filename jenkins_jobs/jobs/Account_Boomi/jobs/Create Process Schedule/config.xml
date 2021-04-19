@@ -142,7 +142,7 @@ echo $scheduleId</command>
           <variable>authToken</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
         <org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
-          <credentialsId>gitUserPassword</credentialsId>
+          <credentialsId>GIT_HUB_API_TOKEN</credentialsId>
           <variable>GIT_AUTH</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
       </bindings>
