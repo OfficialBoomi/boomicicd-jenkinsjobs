@@ -6,12 +6,12 @@ There is a JOB_ENV variable that restricts what Boomi environment these jobs can
 GIT administrator need to ensure appropriate levels of control in the GIT branches; and restrict direct checking into master branch.</description>
   <keepDependencies>false</keepDependencies>
   <properties/>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@4.6.0">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@4.7.1">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url></url>
-        <credentialsId>gitUserPassword</credentialsId>
+        <url>https://github.com/boomiguy/boomi-jobbuilder.git</url>
+        <credentialsId>gitReleaseRepoUserPassword</credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
@@ -36,8 +36,8 @@ GIT administrator need to ensure appropriate levels of control in the GIT branch
   <builders>
     <hudson.tasks.Shell>
       <command># These properties can be set at the folder level
-export JENKINS_URL=&quot;https://https://cicddemo.boomidevops.com/&quot;
-export JOB_URL_BASE=&quot;https://cicddemo.boomidevops.com/job/Account_Boomi&quot;
+export JENKINS_URL=&quot;https://[update]/&quot;
+export JOB_URL_BASE=&quot;https://[update]/job/Account_Boomi&quot;
 export JENKINS_USER=&quot;admin&quot;
 # Job specific property
 export JOB_ENV=&quot;Test&quot;
@@ -56,7 +56,7 @@ ${SCRIPTS_HOME}/bin/dynamicJenkinsGitJobBuilder.sh
             </results>
             <role>BOTH</role>
             <executeOn>BOTH</executeOn>
-            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${GIT_API_URL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=DynamicGITJob_Dev STATE=success</filePath>
+            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${gitReleaseRepoAPIURL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=DynamicGITJob_Dev STATE=success</filePath>
             <scriptType>GENERIC</scriptType>
             <sandboxed>false</sandboxed>
           </org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
@@ -67,7 +67,7 @@ ${SCRIPTS_HOME}/bin/dynamicJenkinsGitJobBuilder.sh
             </results>
             <role>BOTH</role>
             <executeOn>BOTH</executeOn>
-            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${GIT_API_URL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=DynamicGITJob_Dev STATE=failure</filePath>
+            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${gitReleaseRepoAPIURL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=DynamicGITJob_Dev STATE=failure</filePath>
             <scriptType>GENERIC</scriptType>
             <sandboxed>false</sandboxed>
           </org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
@@ -86,7 +86,7 @@ ${SCRIPTS_HOME}/bin/dynamicJenkinsGitJobBuilder.sh
           <variable>JENKINS_TOKEN</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
         <org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
-          <credentialsId>GIT_HUB_API_TOKEN</credentialsId>
+          <credentialsId>gitReleaseRepoAPIToken</credentialsId>
           <variable>GIT_AUTH</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
       </bindings>

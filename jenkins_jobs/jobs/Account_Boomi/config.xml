@@ -1,5 +1,5 @@
 <?xml version='1.1' encoding='UTF-8'?>
-<com.cloudbees.hudson.plugins.folder.Folder plugin="cloudbees-folder@6.14">
+<com.cloudbees.hudson.plugins.folder.Folder plugin="cloudbees-folder@6.15">
   <actions/>
   <description>The Boomi CICD jobs for the above account</description>
   <displayName>Account Boomi</displayName>
@@ -7,7 +7,7 @@
     <com.cloudbees.hudson.plugins.folder.properties.FolderCredentialsProvider_-FolderCredentialsProperty>
       <domainCredentialsMap class="hudson.util.CopyOnWriteMap$Hash">
         <entry>
-          <com.cloudbees.plugins.credentials.domains.Domain plugin="credentials@2.3.15">
+          <com.cloudbees.plugins.credentials.domains.Domain plugin="credentials@2.3.18">
             <specifications/>
           </com.cloudbees.plugins.credentials.domains.Domain>
           <java.util.concurrent.CopyOnWriteArrayList>
@@ -19,35 +19,35 @@
             <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
               <id>sonarToken</id>
               <description>Token for Sonar</description>
-              <secret>{AQAAABAAAACAs0t206sNUI27zgeIBZ5XIXHrhA4vGjLNlnOrTeZDMIhPQZ5rPqXMW+gLnmv0p586tRzOPnAL4TiUq2EN9xaagFNicAJH1u60r3umy1mDwyGizZDj2F/rwS4NqIy1OzpazbN7F5UUz2hZajra6nobWrCwwNzj+3utjQvEU4EN/QXloHT3iY5myZYOYTL3jmEd}</secret>
-            </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
-            <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
-              <id>gitRepoURL</id>
-              <description>GIT Repo URL including secrets https://user:pass@giturl.com</description>
-              <secret>{AQAAABAAAAAQe3FYYBAuzz+6A8szxSl3W4IhCNb8Qih8UMJiUyFD71E=}</secret>
+              <secret>{AQAAABAAAAAQ+YyYq5Imfdi65le+AtyfAj0/r1xzy/lS0L/8JNgOkL0=}</secret>
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
             <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
               <id>JENKINS_TOKEN</id>
-              <description>Token used by JENKINS_USER to trigger remote jobs</description>
-              <secret>{AQAAABAAAAAQZP/a2hGdm39BcTUoOThUJMX0SPjXHw5c9EJEddhkQVU=}</secret>
+              <description>Token used by JENKINS_USER to trigger remote jobs 114cc0ce6b86029e61c4385012ca721754</description>
+              <secret>{AQAAABAAAAAQ+YyYq5Imfdi65le+AtyfAj0/r1xzy/lS0L/8JNgOkL0=}</secret>
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
-            <com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl plugin="credentials@2.3.15">
-              <id>gitUserPassword</id>
-              <description>GIT User and Password for CICD</description>
-              <username>GIT USERNAME</username>
-              <password>{AQAAABAAAAAQqrqr8c4W8a6YynS7k6KvwmPxr83oanIfk3dTc0F4gOI=}</password>
-            </com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>
-			<com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl plugin="credentials@2.3.15">
-              <id>GIT_HUB_API_TOKEN</id>
-              <description>This is used to for Jenkins to call back GIT HUB must use Personal Access Token Generated in GIT</description>
+            <com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl plugin="credentials@2.3.18">
+              <id>gitReleaseRepoUserPassword</id>
+              <description>User ID and password to connect to GIT Release Repo</description>
               <username>username</username>
-              <password>{AQAAABAAAAAQqrqr8c4W8a6YynS7k6KvwmPxr83oanIfk3dTc0F4gOI=}</password>
+              <password>{AQAAABAAAAAQ+YyYq5Imfdi65le+AtyfAj0/r1xzy/lS0L/8JNgOkL0=}</password>
             </com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>
+            <com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl plugin="credentials@2.3.18">
+              <id>gitReleaseRepoAPIToken</id>
+              <description>This is used by Jenkins Jobs to update the commit status in $gitReleaseRepoAPIURL. This must use Personal Access Token Generated from GIT</description>
+              <username>username</username>
+              <password>{AQAAABAAAAAQ+YyYq5Imfdi65le+AtyfAj0/r1xzy/lS0L/8JNgOkL0=}</password>
+            </com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>
+            <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
+              <id>gitComponentRepoURL</id>
+              <description>GIT Component URL in the form of https://user:password@giturl.com</description>
+              <secret>{AQAAABAAAAAQ+YyYq5Imfdi65le+AtyfAj0/r1xzy/lS0L/8JNgOkL0=}</secret>
+            </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
           </java.util.concurrent.CopyOnWriteArrayList>
         </entry>
       </domainCredentialsMap>
     </com.cloudbees.hudson.plugins.folder.properties.FolderCredentialsProvider_-FolderCredentialsProperty>
-    <org.jenkinsci.plugins.docker.workflow.declarative.FolderConfig plugin="docker-workflow@1.24">
+    <org.jenkinsci.plugins.docker.workflow.declarative.FolderConfig plugin="docker-workflow@1.26">
       <dockerLabel></dockerLabel>
       <registry plugin="docker-commons@1.17"/>
     </org.jenkinsci.plugins.docker.workflow.declarative.FolderConfig>
@@ -63,7 +63,7 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>accountId</key>
-          <value>[Update accountId HERE]</value>
+          <value>[Enter Account ID]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>baseURL</key>
@@ -90,28 +90,28 @@
           <value></value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
-          <key>gitRepoName</key>
-          <value>[Update GIT REPO NAME HERE]</value>
+          <key>gitComponentRepoName</key>
+          <value>[Enter Git Component Repo Name]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
-          <key>gitUserName</key>
-          <value>[Update GIT USER NAME HERE]</value>
+          <key>gitComponentUserName</key>
+          <value>[]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
-          <key>gitUserEmail</key>
-          <value>[Update GIT USER EMAIL HERE]</value>
+          <key>gitComponentUserEmail</key>
+          <value>[]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
-          <key>gitOption</key>
+          <key>gitComponentOption</key>
           <value>CLONE</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
-          <key>gitRepoURL</key>
+          <key>gitComponentRepoURL</key>
           <value>[Update gitRepoURLhere. If your repo contains passwords add it to the folder credentials]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>SLEEP_TIMER</key>
-          <value>0.01</value>
+          <value>0.03</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>VERBOSE</key>
@@ -123,11 +123,15 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>AWS_DEFAULT_REGION</key>
-          <value>[Update AWS_DEFAULT_REGION HERE]</value>
+          <value>us-east-2</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
-          <key>GIT_API_URL</key>
-          <value>[Update GIT API URL to update commit status. https://api.github.com/repos/{username}/{git-config-repo}</value>
+          <key>gitReleaseRepoAPIURL</key>
+          <value>[]</value>
+        </com.mig82.folders.properties.StringProperty>
+        <com.mig82.folders.properties.StringProperty>
+          <key>gitComponentCommitPath</key>
+          <value>/tree/master/</value>
         </com.mig82.folders.properties.StringProperty>
       </properties>
     </com.mig82.folders.properties.FolderProperties>
@@ -218,6 +222,7 @@
           <string>Deploy Package</string>
           <string>Deploy Packages</string>
           <string>DynamicGitJob_Dev</string>
+          <string>DynamicGitJob_Test</string>
           <string>Execute Process</string>
           <string>List Processes</string>
           <string>Query Execution Record</string>

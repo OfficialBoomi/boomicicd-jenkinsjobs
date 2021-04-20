@@ -9,7 +9,6 @@
         <hudson.model.StringParameterDefinition>
           <name>env</name>
           <description>Name of the environment</description>
-          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.TextParameterDefinition>
@@ -24,7 +23,6 @@
   &quot;extensionGroupId&quot;: &quot;&quot;,
   &quot;id&quot;: &quot;[Same as environmentId]&quot;
 }&apos;</description>
-          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.TextParameterDefinition>
         <hudson.model.PasswordParameterDefinition>
@@ -60,7 +58,6 @@
         <hudson.model.StringParameterDefinition>
           <name>GIT_COMMIT</name>
           <description>This value is passed in from Dynamic Job Builder and if present will update GIT with the status of the job</description>
-          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
@@ -91,7 +88,7 @@ echo $envId</command>
             </results>
             <role>BOTH</role>
             <executeOn>BOTH</executeOn>
-            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${GIT_API_URL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=Update_Environment_Extensions STATE=success</filePath>
+            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${gitReleaseRepoAPIURL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=Update_Environment_Extensions STATE=success</filePath>
             <scriptType>GENERIC</scriptType>
             <sandboxed>false</sandboxed>
           </org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
@@ -102,7 +99,7 @@ echo $envId</command>
             </results>
             <role>BOTH</role>
             <executeOn>BOTH</executeOn>
-            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${GIT_API_URL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=Update_Environment_Extensions STATE=failure</filePath>
+            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${gitReleaseRepoAPIURL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=Update_Environment_Extensions STATE=failure</filePath>
             <scriptType>GENERIC</scriptType>
             <sandboxed>false</sandboxed>
           </org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
@@ -121,7 +118,7 @@ echo $envId</command>
           <variable>authToken</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
         <org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
-          <credentialsId>GIT_HUB_API_TOKEN</credentialsId>
+          <credentialsId>gitReleaseRepoAPIToken</credentialsId>
           <variable>GIT_AUTH</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
       </bindings>
