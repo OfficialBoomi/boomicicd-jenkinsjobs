@@ -38,7 +38,7 @@ Configure Jenkins to connect to Boomi Account. (This assume firewall/proxy b/w J
 * Update the the folder properties Name: gitComponentOption Value: <CLONE| TAG> if you use CLONE it clones the repo and pushes the content. Else creates a release tag (zip)
 * Update the the folder properties Name: gitComponentUserName Value: <git --config global.username>. 
 * Update the the folder properties Name: gitComponentUserEmail Value: <git --config global.email>. 
-* Update the the folder properties Name: gitReleaseAPIURL Value: The API URI for the gitReleaseRepo
+* Update the the folder properties Name: gitReleaseRepoAPIURL Value: The API URI for the gitReleaseRepo
 * Update the the folder properties Name: sonarHostURL Value: <GIT Repo URL if using GIT>. 
 * Update the the folder properties Name: sonarProjectKey Value: <Name of SonarProject (if using Sonar)>
 
@@ -49,6 +49,7 @@ Configure Jenkins to connect to Boomi Account. (This assume firewall/proxy b/w J
 * Update the gitComponentRepoURL. If the gitComponentRepo has username and password
 * Update the gitReleaseRepoUserPassword. To connect to gitReleaseRepo to recieve WebHooks. [See](https://docs.github.com/en/developers/webhooks-and-events/webhooks) 
 * Update the gitReleaseRepoAPIToken. To connect gitReleaseRepo to update the commit status using an username and API token.
+* Update the JENKINS_TOKEN. This is used to trigger Jobs using Jenkins API from DynamicGitJob jobs. [See](https://www.decodingdevops.com/jenkins-authentication-token-jenkins-rest-api/)
 * Click Rename and rename the folder name to Account_YOUR ACCOUNT
 
 ## Run your first Job
@@ -127,7 +128,7 @@ Note: If the Build or Build with parameter menu is not available. Then disable t
 * export JENKINS_USER="admin"
 * Update the property export JOB_ENV="Development" to point to the Boomi Development environment. 
 * This is to ensure the json configuration matches the target environment and prevent a Development config/job/git repo run jobs targetted to a non-development environment.
-* Jenkins job can send a status update back to GIT as part of the Post Build Step. For set up [here](https://medium.com/@applitools/how-to-update-jenkins-build-status-in-github-pull-requests-step-by-step-tutorial-bf213a2eacbe). Please note ?jenkins_token described above is deprecated. This has to be done for all relevent Jenkins jobs like Deploy Packages, Update Extensions...
+* Jenkins job can send a status update back to GIT as part of the Post Build Step. For set up [here](https://medium.com/@applitools/how-to-update-jenkins-build-status-in-github-pull-requests-step-by-step-tutorial-bf213a2eacbe). This has to be done for all relevent Jenkins jobs like Deploy Packages, Deploy Package, Update Extensions, Create Process Schedules
 
 # Support
 This image is not supported at this time. Please leave your comments at https://community.boomi.com/s/group/0F91W0000008r5WSAQ/devops-boomi
