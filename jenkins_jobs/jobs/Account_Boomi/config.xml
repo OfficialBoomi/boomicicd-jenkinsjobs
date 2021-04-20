@@ -23,7 +23,7 @@
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
             <org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl plugin="plain-credentials@1.7">
               <id>JENKINS_TOKEN</id>
-              <description>Token used by JENKINS_USER to trigger remote jobs 114cc0ce6b86029e61c4385012ca721754</description>
+              <description>Token used by JENKINS_USER to trigger remote jobs</description>
               <secret>{AQAAABAAAAAQ+YyYq5Imfdi65le+AtyfAj0/r1xzy/lS0L/8JNgOkL0=}</secret>
             </org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl>
             <com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl plugin="credentials@2.3.18">
@@ -95,11 +95,11 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitComponentUserName</key>
-          <value>[]</value>
+          <value>[Enter Git Component Username here ]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitComponentUserEmail</key>
-          <value>[]</value>
+          <value>[Update Git Component User Email Here]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitComponentOption</key>
@@ -107,7 +107,7 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitComponentRepoURL</key>
-          <value>[Update gitRepoURLhere. If your repo contains passwords add it to the folder credentials]</value>
+          <value>[Update gitComponentRepoURL here. If your repo contains passwords add it to the folder credentials]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>SLEEP_TIMER</key>
@@ -127,7 +127,7 @@
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitReleaseRepoAPIURL</key>
-          <value>[]</value>
+          <value>[Update GIT Release REPO API URL here.]</value>
         </com.mig82.folders.properties.StringProperty>
         <com.mig82.folders.properties.StringProperty>
           <key>gitComponentCommitPath</key>
