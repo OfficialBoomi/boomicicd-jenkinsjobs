@@ -6,12 +6,12 @@ There is a JOB_ENV variable that restricts what Boomi environment these jobs can
 GIT administrator need to ensure appropriate levels of control in the GIT branches; and restrict direct checking into master branch.</description>
   <keepDependencies>false</keepDependencies>
   <properties/>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@4.7.1">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@4.4.5">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url></url>
-        <credentialsId>gitReleaseRepoUserPassword</credentialsId>
+        <url>https://github.com/boomiguy/boomi-jobbuilder.git</url>
+        <credentialsId>gitUserPassword</credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
@@ -20,7 +20,7 @@ GIT administrator need to ensure appropriate levels of control in the GIT branch
       </hudson.plugins.git.BranchSpec>
     </branches>
     <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
-    <submoduleCfg class="empty-list"/>
+    <submoduleCfg class="list"/>
     <extensions/>
   </scm>
   <canRoam>true</canRoam>
@@ -28,7 +28,7 @@ GIT administrator need to ensure appropriate levels of control in the GIT branch
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <triggers>
-    <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.33.1">
+    <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.31.0">
       <spec></spec>
     </com.cloudbees.jenkins.GitHubPushTrigger>
   </triggers>
@@ -36,12 +36,13 @@ GIT administrator need to ensure appropriate levels of control in the GIT branch
   <builders>
     <hudson.tasks.Shell>
       <command># These properties can be set at the folder level
-export JENKINS_URL=&quot;https://[update]/&quot;
-export JOB_URL_BASE=&quot;https://[update]/job/Account_Boomi&quot;
+export JENKINS_URL=&quot;http://localhost:8080/&quot;
+export JOB_URL_BASE=&quot;http://localhost:8080/job/Account_Boomi&quot;
 export JENKINS_USER=&quot;admin&quot;
 # Job specific property
 export JOB_ENV=&quot;Development&quot;
-${SCRIPTS_HOME}/bin/dynamicJenkinsGitJobBuilder.sh
+
+${SCRIPTS_HOME}/bin/dynamicGitJobBuilder.sh 
 </command>
       <configuredLocalRules/>
     </hudson.tasks.Shell>
@@ -56,7 +57,7 @@ ${SCRIPTS_HOME}/bin/dynamicJenkinsGitJobBuilder.sh
             </results>
             <role>BOTH</role>
             <executeOn>BOTH</executeOn>
-            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${gitReleaseRepoAPIURL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=DynamicGITJob_Dev STATE=success</filePath>
+            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${GIT_API_URL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=DynamicGITJob_Dev STATE=success</filePath>
             <scriptType>GENERIC</scriptType>
             <sandboxed>false</sandboxed>
           </org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
@@ -67,7 +68,7 @@ ${SCRIPTS_HOME}/bin/dynamicJenkinsGitJobBuilder.sh
             </results>
             <role>BOTH</role>
             <executeOn>BOTH</executeOn>
-            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${gitReleaseRepoAPIURL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=DynamicGITJob_Dev STATE=failure</filePath>
+            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${GIT_API_URL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=DynamicGITJob_Dev STATE=failure</filePath>
             <scriptType>GENERIC</scriptType>
             <sandboxed>false</sandboxed>
           </org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
@@ -86,12 +87,12 @@ ${SCRIPTS_HOME}/bin/dynamicJenkinsGitJobBuilder.sh
           <variable>JENKINS_TOKEN</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
         <org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
-          <credentialsId>gitReleaseRepoAPIToken</credentialsId>
+          <credentialsId>gitUserPassword</credentialsId>
           <variable>GIT_AUTH</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
       </bindings>
     </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
     <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.2.1"/>
-    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.7"/>
+    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.6"/>
   </buildWrappers>
 </project>

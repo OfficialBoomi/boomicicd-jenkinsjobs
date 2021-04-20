@@ -13,16 +13,19 @@ source bin/createPackage.sh</description>
         <hudson.model.StringParameterDefinition>
           <name>componentId</name>
           <description>Id of the component to be packaged and deployed if this value is null component name will be used instead.</description>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>processName</name>
           <description>Name of the Process to be Packaged</description>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>packageVersion</name>
           <description>Version of the Package to be created</description>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
@@ -33,27 +36,32 @@ source bin/createPackage.sh</description>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>componentType</name>
+          <description></description>
           <defaultValue>process</defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>componentVersion</name>
           <description>If no value is specified the latest component version will be used to create the package.</description>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>extractComponentXmlFolder</name>
           <description>If this value is set the component XMLs with the package will be extracted. This may take up to 2 minutes to extract all components of the package</description>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>tag</name>
           <description>If this value is set the component XML will be stored in GIT. In the ${gitRepoURL} configured.</description>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>GIT_COMMIT</name>
           <description>This value is passed in from Dynamic Job Builder and if present will update GIT with the status of the job</description>
+          <defaultValue></defaultValue>
           <trim>false</trim>
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
@@ -96,7 +104,7 @@ echo &quot;PackageId is $packageId&quot;</command>
             </results>
             <role>BOTH</role>
             <executeOn>BOTH</executeOn>
-            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${gitReleaseRepoAPIURL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=Create_Package STATE=failure</filePath>
+            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${GIT_API_URL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=Create_Package STATE=failure</filePath>
             <scriptType>GENERIC</scriptType>
             <sandboxed>false</sandboxed>
           </org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
@@ -105,8 +113,7 @@ echo &quot;PackageId is $packageId&quot;</command>
               <string>SUCCESS</string>
             </results>
             <role>BOTH</role>
-            <executeOn>BOTH</executeOn>
-            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${gitReleaseRepoAPIURL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=Create_Package STATE=success</filePath>
+            <filePath>${SCRIPTS_HOME}/bin/postBuildUpdateGit.sh GIT_API_URL=${GIT_API_URL} GIT_AUTH=${GIT_AUTH} GIT_COMMIT=${GIT_COMMIT} JENKINS_CALLBACK_URL=${JOB_URL}/${BUILD_NUMBER}/console JOB_BASE_NAME=Create_Package STATE=success</filePath>
             <scriptType>GENERIC</scriptType>
             <sandboxed>false</sandboxed>
           </org.jenkinsci.plugins.postbuildscript.model.ScriptFile>
@@ -125,20 +132,20 @@ echo &quot;PackageId is $packageId&quot;</command>
           <variable>authToken</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
         <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
-          <credentialsId>authToken</credentialsId>
-          <variable>gitComponentRepoURL</variable>
+          <credentialsId>gitRepoURL</credentialsId>
+          <variable>gitRepoURL</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
         <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
           <credentialsId>sonarToken</credentialsId>
           <variable>sonarToken</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
         <org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
-          <credentialsId>gitReleaseRepoAPIToken</credentialsId>
+          <credentialsId>gitUserPassword</credentialsId>
           <variable>GIT_AUTH</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.UsernamePasswordBinding>
       </bindings>
     </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
     <com.mig82.folders.wrappers.ParentFolderBuildWrapper plugin="folder-properties@1.2.1"/>
-    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.7"/>
+    <org.jenkinsci.plugins.builduser.BuildUser plugin="build-user-vars-plugin@1.6"/>
   </buildWrappers>
 </project>
