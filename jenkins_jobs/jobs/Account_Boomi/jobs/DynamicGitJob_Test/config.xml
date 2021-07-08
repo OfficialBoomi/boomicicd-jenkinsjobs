@@ -10,13 +10,13 @@ GIT administrator need to ensure appropriate levels of control in the GIT branch
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url></url>
+        <url>https://github.com/boomiguy/boomi-jobbuilder.git</url>
         <credentialsId>gitReleaseRepoUserPassword</credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
-        <name>**</name>
+        <name>Test</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
@@ -40,7 +40,7 @@ export JENKINS_URL=&quot;https://[update]/&quot;
 export JOB_URL_BASE=&quot;https://[update]/job/Account_Boomi&quot;
 export JENKINS_USER=&quot;admin&quot;
 # Job specific property
-export JOB_ENV=&quot;Development&quot;
+export JOB_ENV=&quot;Test&quot;
 ${SCRIPTS_HOME}/bin/dynamicJenkinsGitJobBuilder.sh
 </command>
       <configuredLocalRules/>
