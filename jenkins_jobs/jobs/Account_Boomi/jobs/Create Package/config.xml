@@ -125,7 +125,7 @@ echo &quot;PackageId is $packageId&quot;</command>
           <variable>authToken</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
         <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
-          <credentialsId>authToken</credentialsId>
+		  <credentialsId>gitComponentRepoURL</credentialsId>
           <variable>gitComponentRepoURL</variable>
         </org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
         <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
